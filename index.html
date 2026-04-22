@@ -598,15 +598,6 @@ let selectedField = '전체';
 let selectedStage = '전체';
 let currentKeyword = '';
 
-// 단계 → API PROC_RESULT 키워드 매핑
-const STAGE_PROC_MAP = {
-  '1': '위원회 회부',
-  '2': '위원회 심사',
-  '3': '가결',
-  '4': '정부이송',
-  '5': '공포',
-};
-
 async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOverride = null } = {}) {
   if (fieldOverride !== null) selectedField = fieldOverride;
   if (stageOverride !== null) selectedStage = stageOverride;
@@ -615,17 +606,14 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
 
   showGridLoading('topics-bills-grid');
   try {
-    const params = { pIndex: page, pSize: PAGE_SIZE };
+    // 단계 필터 시 더 많은 데이터를 가져와 클라이언트 필터링
+    const fetchSize = selectedStage !== '전체' ? 100 : PAGE_SIZE;
+    const params = { pIndex: page, pSize: fetchSize };
     if (keyword) params.BILL_NAME = keyword;
 
     if (selectedField !== '전체') {
       const committee = Object.entries(COMMITTEE_FIELD).find(([, v]) => v === selectedField)?.[0] || '';
       if (committee) params.COMMITTEE = committee;
-    }
-
-    if (selectedStage !== '전체') {
-      const procVal = STAGE_PROC_MAP[selectedStage];
-      if (procVal) params.PROC_RESULT = procVal;
     }
 
     const data = await apiFetch(params);
@@ -634,9 +622,18 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
     loadedBills = rows.map(mapApiRow);
     apiLoaded = true;
 
-    document.getElementById('result-count').textContent = `총 ${total.toLocaleString()}건`;
-    renderBillsGrid('topics-bills-grid', loadedBills);
-    renderPagination(page, Math.ceil(total / PAGE_SIZE));
+    // 단계 클라이언트 필터링
+    let displayBills = loadedBills;
+    if (selectedStage !== '전체') {
+      displayBills = loadedBills.filter(b => (b.stage ?? 0) === Number(selectedStage));
+    }
+
+    document.getElementById('result-count').textContent =
+      selectedStage !== '전체'
+        ? `${displayBills.length}건 (전체 ${total.toLocaleString()}건 중)`
+        : `총 ${total.toLocaleString()}건`;
+    renderBillsGrid('topics-bills-grid', displayBills);
+    renderPagination(page, Math.ceil(total / fetchSize));
   } catch (err) {
     console.error(err);
     apiLoaded = false;
