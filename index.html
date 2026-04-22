@@ -19,17 +19,6 @@
     #search-form { display: flex; flex: 1; gap: 8px; }
     #search-input { flex: 1; padding: 8px 12px; font-size: 15px; border: 1px solid #ccc; border-radius: 4px; }
     #search-btn { padding: 8px 16px; font-size: 15px; cursor: pointer; }
-    #api-settings-btn {
-      background: none; border: 1px solid #ccc; border-radius: 4px;
-      padding: 6px 10px; font-size: 16px; cursor: pointer; flex-shrink: 0;
-    }
-    #api-settings-btn:hover { background: #f0f0f0; }
-    #api-status-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #ccc; flex-shrink: 0;
-    }
-    #api-status-dot.live { background: #22c55e; }
-    #api-status-dot.error { background: #ef4444; }
 
     /* 메인 레이아웃 */
     #layout { display: flex; flex: 1; overflow: hidden; }
@@ -52,17 +41,6 @@
     .page { display: none; flex-direction: column; flex: 1; }
     .page.active { display: flex; }
 
-    /* API 키 배너 */
-    #api-banner {
-      background: #fffbeb; border-bottom: 1px solid #f59e0b;
-      padding: 10px 20px; font-size: 13px; color: #92400e;
-      display: flex; align-items: center; gap: 10px;
-    }
-    #api-banner button {
-      padding: 4px 12px; font-size: 12px; cursor: pointer;
-      border: 1px solid #f59e0b; border-radius: 4px; background: #fff; color: #92400e;
-    }
-    #api-banner.hidden { display: none; }
 
     /* 로딩 */
     .loading-wrap {
@@ -272,29 +250,6 @@
       font-size: 13px; color: #aaa; padding: 4px 0;
     }
 
-    /* ══ API 설정 모달 ══ */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4); z-index: 400;
-      align-items: center; justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal-box { background: #fff; border-radius: 8px; padding: 32px; max-width: 480px; width: 90%; }
-    .modal-box h2 { font-size: 18px; font-weight: bold; margin-bottom: 16px; }
-    .modal-box p { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px; }
-    .modal-box label { font-size: 13px; font-weight: bold; color: #444; display: block; margin-bottom: 6px; }
-    .modal-box input[type=text] {
-      width: 100%; padding: 9px 12px; font-size: 14px;
-      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 16px;
-    }
-    .modal-btn-row { display: flex; gap: 8px; justify-content: flex-end; }
-    .modal-btn {
-      padding: 8px 20px; font-size: 13px; cursor: pointer;
-      border: 1px solid #ccc; border-radius: 4px; background: #fff;
-    }
-    .modal-btn.primary { background: #222; color: #fff; border-color: #222; }
-    .modal-btn:hover { opacity: 0.85; }
-    .modal-note { font-size: 11px; color: #aaa; margin-top: 12px; }
 
     /* 이용방법 모달 */
     #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: center; justify-content: center; }
@@ -314,8 +269,6 @@
     <input id="search-input" type="text" placeholder="법안 이름, 키워드로 검색..." autocomplete="off" />
     <button id="search-btn" type="submit">검색</button>
   </form>
-  <span id="api-status-dot" title="API 연결 상태"></span>
-  <button id="api-settings-btn" onclick="openApiSettings()" title="API 설정">⚙</button>
 </div>
 
 <!-- 메인 레이아웃 -->
@@ -329,12 +282,6 @@
   </div>
 
   <div id="content">
-
-    <!-- API 배너 -->
-    <div id="api-banner">
-      ⚠ API 키가 설정되지 않아 샘플 데이터를 표시합니다.
-      <button onclick="openApiSettings()">API 키 설정하기</button>
-    </div>
 
     <!-- 홈 -->
     <div id="page-home" class="page active">
@@ -499,30 +446,6 @@
   </div>
 </div>
 
-<!-- API 설정 모달 -->
-<div id="api-settings-overlay" class="modal-overlay" onclick="closeApiSettingsOutside(event)">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <h2>API 키 설정</h2>
-
-    <label for="api-key-input">열린국회정보 API 키</label>
-    <input type="text" id="api-key-input" placeholder="발급받은 인증키를 입력하세요" />
-    <p style="font-size:11px;color:#aaa;margin-top:-10px;margin-bottom:16px;">
-      발급: <a href="https://open.assembly.go.kr/portal/openapi/main.do" target="_blank" rel="noopener">open.assembly.go.kr → 마이페이지 → 인증키 발급</a>
-    </p>
-
-    <label for="openai-key-input">OpenAI API 키 <span style="font-weight:normal;color:#888;">(법안 상세 자동 생성)</span></label>
-    <input type="password" id="openai-key-input" placeholder="sk-..." />
-    <p style="font-size:11px;color:#aaa;margin-top:-10px;margin-bottom:16px;">
-      발급: <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com → API Keys</a>
-    </p>
-
-    <div class="modal-btn-row">
-      <button class="modal-btn" onclick="closeApiSettings()">취소</button>
-      <button class="modal-btn primary" onclick="saveApiKey()">저장 및 데이터 불러오기</button>
-    </div>
-    <p class="modal-note">키는 브라우저 로컬스토리지에만 저장되며 외부로 전송되지 않습니다.</p>
-  </div>
-</div>
 
 <script>
 /* ════════════════════════════
@@ -534,16 +457,15 @@ const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 const TL_STEPS = ['발의', '위원회 회부', '위원회 심사', '본회의 의결', '정부 이송', '공포/시행'];
 const PAGE_SIZE = 30;
 
-let apiKey = localStorage.getItem('assemblyApiKey') || '';
-let openaiApiKey = localStorage.getItem('openaiApiKey') || '';
+// ★ 사이트 운영자가 여기에 키를 입력하세요
+const ASSEMBLY_API_KEY = '';  // open.assembly.go.kr 인증키
+const OPENAI_API_KEY = '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';    // platform.openai.com API 키
+
 let currentPage = 1;
 let totalCount = 0;
 let apiLoaded = false;
 
-// 불러온 법안 풀
 let loadedBills = [];
-
-// AI가 생성한 상세 정보 캐시 (billNo 기준)
 const billDetailsCache = {};
 
 /* ════════════════════════════
@@ -594,7 +516,7 @@ function procResultToStage(proc) {
    API 호출
 ════════════════════════════ */
 async function apiFetch(params) {
-  const qs = new URLSearchParams({ KEY: apiKey, Type: 'json', AGE: 22, ...params });
+  const qs = new URLSearchParams({ KEY: ASSEMBLY_API_KEY, Type: 'json', AGE: 22, ...params });
   const directUrl = `${API_BASE}/${BILL_LIST_EP}?${qs}`;
 
   // 직접 시도
@@ -665,21 +587,11 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null } = {}) 
   currentPage = page;
   currentKeyword = keyword;
 
-  if (!apiKey) {
-    // 샘플 데이터 사용
-    apiLoaded = false;
-    setApiStatus('none');
-    loadedBills = SAMPLE_BILLS;
-    applyLocalFilters();
-    return;
-  }
-
   showGridLoading('topics-bills-grid');
   try {
     const params = { pIndex: page, pSize: PAGE_SIZE };
     if (keyword) params.BILL_NAME = keyword;
 
-    // 분야별 → 위원회 역매핑
     if (selectedField !== '전체') {
       const committee = Object.entries(COMMITTEE_FIELD).find(([, v]) => v === selectedField)?.[0] || '';
       if (committee) params.COMMITTEE = committee;
@@ -690,16 +602,12 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null } = {}) 
     totalCount = total;
     loadedBills = rows.map(mapApiRow);
     apiLoaded = true;
-    setApiStatus('live');
-    document.getElementById('api-banner').classList.add('hidden');
 
     document.getElementById('result-count').textContent = `총 ${total.toLocaleString()}건`;
     renderBillsGrid('topics-bills-grid', loadedBills);
     renderPagination(page, Math.ceil(total / PAGE_SIZE));
   } catch (err) {
-    setApiStatus('error');
     console.error(err);
-    // 폴백: 샘플
     apiLoaded = false;
     loadedBills = SAMPLE_BILLS;
     applyLocalFilters();
@@ -710,18 +618,11 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null } = {}) 
 }
 
 async function loadHomeBills() {
-  if (!apiKey) {
-    renderBillsGrid('home-bills-grid', SAMPLE_BILLS.slice(0, 6));
-    return;
-  }
   showGridLoading('home-bills-grid');
   try {
     const data = await apiFetch({ pIndex: 1, pSize: 6 });
     const { rows } = parseApiRows(data);
-    const bills = rows.map(mapApiRow);
-    renderBillsGrid('home-bills-grid', bills);
-    setApiStatus('live');
-    document.getElementById('api-banner').classList.add('hidden');
+    renderBillsGrid('home-bills-grid', rows.map(mapApiRow));
   } catch {
     renderBillsGrid('home-bills-grid', SAMPLE_BILLS.slice(0, 6));
   }
@@ -867,7 +768,7 @@ async function fetchBillContent(bill) {
 async function generateBillDetails(bill) {
   const cacheKey = bill.billNo || bill.title;
   if (billDetailsCache[cacheKey]) return billDetailsCache[cacheKey];
-  if (!openaiApiKey) return null;
+  if (!OPENAI_API_KEY) return null;
 
   // 국회 API에서 법안 본문 읽기 시도
   const billContent = await fetchBillContent(bill);
@@ -897,7 +798,7 @@ ${contextBlock}
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${openaiApiKey}`,
+      'Authorization': `Bearer ${OPENAI_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -993,14 +894,7 @@ async function openBill(idx) {
     return;
   }
 
-  if (!openaiApiKey) {
-    document.getElementById('detail-desc').textContent = b.desc || '원문을 통해 상세 내용을 확인하세요.';
-    document.getElementById('impact-list').innerHTML = '<div class="impact-item"><span class="impact-effect" style="color:#aaa">OpenAI API 키를 설정하면 법안 내용이 자동으로 분석됩니다. (⚙ 설정)</span></div>';
-    document.getElementById('key-points').innerHTML = '<div class="key-point" style="color:#aaa">OpenAI API 키를 설정하면 주요 내용이 자동으로 생성됩니다.</div>';
-    return;
-  }
-
-  // 로딩 표시 후 Claude 호출
+  // 로딩 표시 후 OpenAI 호출
   setDetailLoading(true);
   try {
     const result = await generateBillDetails(b);
@@ -1097,49 +991,6 @@ function renderOpinions(idx) {
 }
 
 /* ════════════════════════════
-   API 설정 모달
-════════════════════════════ */
-function openApiSettings() {
-  document.getElementById('api-key-input').value = apiKey;
-  document.getElementById('openai-key-input').value = openaiApiKey;
-  document.getElementById('api-settings-overlay').classList.add('open');
-}
-function closeApiSettings() {
-  document.getElementById('api-settings-overlay').classList.remove('open');
-}
-function closeApiSettingsOutside(e) {
-  if (e.target === document.getElementById('api-settings-overlay')) closeApiSettings();
-}
-function saveApiKey() {
-  const key = document.getElementById('api-key-input').value.trim();
-  const cKey = document.getElementById('openai-key-input').value.trim();
-  apiKey = key;
-  openaiApiKey = cKey;
-  localStorage.setItem('assemblyApiKey', key);
-  localStorage.setItem('openaiApiKey', cKey);
-  // 캐시 초기화 (키 변경 시)
-  Object.keys(billDetailsCache).forEach(k => delete billDetailsCache[k]);
-  closeApiSettings();
-  const activePage = document.querySelector('.page.active');
-  if (activePage?.id === 'page-home') loadHomeBills();
-  else if (activePage?.id === 'page-topics') loadBills({ page: 1 });
-  if (key) {
-    document.getElementById('api-banner').classList.add('hidden');
-  } else {
-    document.getElementById('api-banner').classList.remove('hidden');
-    setApiStatus('none');
-  }
-}
-
-function setApiStatus(state) {
-  const dot = document.getElementById('api-status-dot');
-  dot.className = 'api-status-dot';
-  if (state === 'live') { dot.classList.add('live'); dot.title = 'API 연결됨'; }
-  else if (state === 'error') { dot.classList.add('error'); dot.title = 'API 오류'; }
-  else { dot.title = 'API 미연결 (샘플 데이터)'; }
-}
-
-/* ════════════════════════════
    이용방법 모달
 ════════════════════════════ */
 function openModal() { document.getElementById('modal-overlay').classList.add('open'); }
@@ -1154,7 +1005,7 @@ document.getElementById('menu-toggle').addEventListener('click', () => {
 });
 
 /* ════════════════════════════
-   샘플 데이터 (API 키 미설정 시 폴백)
+   샘플 데이터 (API 오류 시 폴백)
 ════════════════════════════ */
 const SAMPLE_BILLS = [
   { field:'노동/고용', jobs:['직장인','프리랜서','자영업자'], regions:['서울','경기','부산'], title:'최저임금법 일부개정법률안', desc:'최저임금 결정 기준에 생계비 외 물가상승률을 반영', date:'2026-04-10', billNo:'2200341', proposer:'김민준 의원 외 11인', committee:'환경노동위원회', stage:2, procResult:'위원회 심사', stageDates:['2026.04.10','2026.04.15','2026.04.21','','',''], impact:[{who:'직장인',effect:'최저임금 인상 폭이 물가에 연동되어 실질 임금이 보전됩니다.'},{who:'자영업자',effect:'인건비 부담이 커질 수 있으나, 소비 여력 증가로 매출에도 영향을 줄 수 있습니다.'}], keyPoints:['최저임금 결정 시 소비자물가지수 상승률을 의무적으로 고려하도록 규정','최저임금위원회 심의 기간을 현행보다 30일 단축','위반 사업주에 대한 과태료 상한을 2천만 원에서 3천만 원으로 상향'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
@@ -1175,14 +1026,6 @@ const SAMPLE_BILLS = [
    초기화
 ════════════════════════════ */
 document.querySelector('.field-btn[data-field="전체"]').classList.add('selected');
-
-if (!apiKey) {
-  document.getElementById('api-banner').classList.remove('hidden');
-  setApiStatus('none');
-} else {
-  document.getElementById('api-banner').classList.add('hidden');
-}
-
 loadHomeBills();
 </script>
 </body>
