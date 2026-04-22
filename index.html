@@ -366,7 +366,7 @@
           </div>
           <div>
             <div class="filter-label">현황별</div>
-            <select id="stage-select" class="filter-select" onchange="applyLocalFilters()">
+            <select id="stage-select" class="filter-select" onchange="selectStage(this.value)">
               <option value="전체">전체</option>
               <option value="0">발의</option>
               <option value="1">회부</option>
@@ -595,10 +595,21 @@ function mapApiRow(row) {
    데이터 로드 진입점
 ════════════════════════════ */
 let selectedField = '전체';
+let selectedStage = '전체';
 let currentKeyword = '';
 
-async function loadBills({ page = 1, keyword = '', fieldOverride = null } = {}) {
+// 단계 → API PROC_RESULT 키워드 매핑
+const STAGE_PROC_MAP = {
+  '1': '위원회 회부',
+  '2': '위원회 심사',
+  '3': '가결',
+  '4': '정부이송',
+  '5': '공포',
+};
+
+async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOverride = null } = {}) {
   if (fieldOverride !== null) selectedField = fieldOverride;
+  if (stageOverride !== null) selectedStage = stageOverride;
   currentPage = page;
   currentKeyword = keyword;
 
@@ -610,6 +621,11 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null } = {}) 
     if (selectedField !== '전체') {
       const committee = Object.entries(COMMITTEE_FIELD).find(([, v]) => v === selectedField)?.[0] || '';
       if (committee) params.COMMITTEE = committee;
+    }
+
+    if (selectedStage !== '전체') {
+      const procVal = STAGE_PROC_MAP[selectedStage];
+      if (procVal) params.PROC_RESULT = procVal;
     }
 
     const data = await apiFetch(params);
@@ -772,6 +788,18 @@ function selectField(btn) {
   document.querySelectorAll('.field-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   selectedField = btn.dataset.field;
+  if (apiLoaded) {
+    loadBills({ page: 1, keyword: currentKeyword });
+  } else {
+    applyLocalFilters();
+  }
+}
+
+/* ════════════════════════════
+   현황별 선택
+════════════════════════════ */
+function selectStage(value) {
+  selectedStage = value;
   if (apiLoaded) {
     loadBills({ page: 1, keyword: currentKeyword });
   } else {
