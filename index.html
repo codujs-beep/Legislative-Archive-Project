@@ -81,10 +81,10 @@
     .bill-card { border: 1px solid #ddd; border-radius: 6px; padding: 16px; cursor: pointer; }
     .bill-card:hover { background: #fafafa; }
     .bill-card .tag { font-size: 11px; color: #888; margin-bottom: 6px; }
-    .bill-card .bill-title { font-size: 14px; font-weight: bold; line-height: 1.4; }
+    .bill-card .bill-friendly { font-size: 15px; font-weight: bold; line-height: 1.45; color: #111; }
+    .bill-card .bill-friendly.loading { font-size: 13px; color: #ccc; font-weight: normal; }
+    .bill-card .bill-title { font-size: 11px; color: #bbb; margin-top: 5px; line-height: 1.4; }
     .bill-card .bill-desc { font-size: 12px; color: #666; margin-top: 8px; line-height: 1.5; }
-    .bill-card .bill-summary { font-size: 12px; color: #444; margin-top: 6px; line-height: 1.45; }
-    .bill-card .bill-summary.loading { color: #ccc; }
     .bill-card .bill-meta { font-size: 11px; color: #aaa; margin-top: 10px; }
     .bill-card .proc-badge {
       display: inline-block; margin-top: 8px;
@@ -706,7 +706,7 @@ async function generateCardSummaries(bills) {
         max_tokens: 2048,
         response_format: { type: 'json_object' },
         messages: [{ role: 'user', content:
-          `다음 한국 국회 법안들 각각에 대해, 일반 시민이 바로 이해할 수 있는 한 줄 요약을 30자 내외로 작성해주세요. "~됩니다", "~강화됩니다", "~받을 수 있습니다" 같은 쉬운 말로 쓰세요.\n\n${list}\n\nJSON으로만 응답: {"summaries": ["1번요약", "2번요약", ...]}` }],
+          `다음 한국 국회 법안들 각각에 대해, 동네 친구한테 말하듯이 쉽고 친근하게 핵심을 한 마디로 표현해주세요. 15자 내외로, "~해요!", "~받을 수 있어요!", "~달라져요!" 같은 말투로 써주세요. 법안 이름은 쓰지 마세요.\n\n${list}\n\nJSON으로만 응답: {"summaries": ["1번", "2번", ...]}` }],
       }),
     });
     if (!res.ok) return;
@@ -717,7 +717,7 @@ async function generateCardSummaries(bills) {
       const key = batch[i].billNo || batch[i].title;
       summaryCache[key] = summary;
       const idx = loadedBills.indexOf(batch[i]);
-      document.querySelectorAll(`.bill-summary[data-idx="${idx}"]`).forEach(el => {
+      document.querySelectorAll(`.bill-friendly[data-idx="${idx}"]`).forEach(el => {
         el.textContent = summary;
         el.classList.remove('loading');
       });
@@ -733,14 +733,14 @@ function billCardHTML(b, localIdx) {
   const procLabel = b.procResult || (b.stage < 1 ? '발의' : TL_STEPS[b.stage] || '');
   const key = b.billNo || b.title;
   const cached = summaryCache[key] || (!b.fromApi && b.desc ? b.desc : '');
-  const summaryHTML = cached
-    ? `<div class="bill-summary" data-idx="${globalIdx}">${cached}</div>`
-    : `<div class="bill-summary loading" data-idx="${globalIdx}">분석 중...</div>`;
+  const friendlyHTML = cached
+    ? `<div class="bill-friendly" data-idx="${globalIdx}">${cached}</div>`
+    : `<div class="bill-friendly loading" data-idx="${globalIdx}">분석 중...</div>`;
   return `
     <div class="bill-card" onclick="openBill(${globalIdx})">
       <div class="tag">${b.field}</div>
+      ${friendlyHTML}
       <div class="bill-title">${b.title}</div>
-      ${summaryHTML}
       <div class="bill-meta">${(b.date || '').replace(/-/g,'.')} 발의</div>
       ${procLabel ? `<span class="proc-badge${isEnacted ? ' enacted' : ''}">${procLabel}</span>` : ''}
     </div>`;
