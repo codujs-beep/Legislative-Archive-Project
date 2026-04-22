@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>알법</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+    /* 상단 바 */
+    #topbar {
+      display: flex; align-items: center;
+      padding: 10px 16px; gap: 12px;
+      border-bottom: 1px solid #ccc; background: #fff; z-index: 100;
+      flex-shrink: 0;
+    }
+    #menu-toggle { font-size: 22px; background: none; border: none; cursor: pointer; }
+    #search-form { display: flex; flex: 1; gap: 8px; }
+    #search-input { flex: 1; padding: 8px 12px; font-size: 15px; border: 1px solid #ccc; border-radius: 4px; }
+    #search-btn { padding: 8px 16px; font-size: 15px; cursor: pointer; }
+    #api-settings-btn {
+      background: none; border: 1px solid #ccc; border-radius: 4px;
+      padding: 6px 10px; font-size: 16px; cursor: pointer; flex-shrink: 0;
+    }
+    #api-settings-btn:hover { background: #f0f0f0; }
+    #api-status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #ccc; flex-shrink: 0;
+    }
+    #api-status-dot.live { background: #22c55e; }
+    #api-status-dot.error { background: #ef4444; }
+
+    /* 메인 레이아웃 */
+    #layout { display: flex; flex: 1; overflow: hidden; }
+
+    /* 사이드바 */
+    #sidebar {
+      width: 200px; border-right: 1px solid #ccc; background: #f9f9f9;
+      transition: width 0.2s ease; overflow: hidden; flex-shrink: 0;
+    }
+    #sidebar.closed { width: 0; border-right: none; }
+    #sidebar nav { padding: 16px 0; white-space: nowrap; }
+    #sidebar nav a { display: block; padding: 12px 20px; text-decoration: none; color: #222; font-size: 15px; }
+    #sidebar nav a:hover { background: #ececec; }
+    #sidebar nav a.active { font-weight: bold; }
+
+    /* 콘텐츠 영역 */
+    #content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
+    /* 페이지 */
+    .page { display: none; flex-direction: column; flex: 1; }
+    .page.active { display: flex; }
+
+    /* API 키 배너 */
+    #api-banner {
+      background: #fffbeb; border-bottom: 1px solid #f59e0b;
+      padding: 10px 20px; font-size: 13px; color: #92400e;
+      display: flex; align-items: center; gap: 10px;
+    }
+    #api-banner button {
+      padding: 4px 12px; font-size: 12px; cursor: pointer;
+      border: 1px solid #f59e0b; border-radius: 4px; background: #fff; color: #92400e;
+    }
+    #api-banner.hidden { display: none; }
+
+    /* 로딩 */
+    .loading-wrap {
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px 0; gap: 10px; font-size: 14px; color: #888;
+    }
+    .spinner {
+      width: 20px; height: 20px; border: 2px solid #eee;
+      border-top-color: #555; border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── 홈 ── */
+    #hero {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; flex: 0 0 50%; text-align: center; padding: 40px 20px 20px;
+    }
+    #hero h1 { font-size: 64px; font-weight: 900; letter-spacing: -2px; }
+    #hero p { margin-top: 14px; font-size: 18px; color: #555; }
+    #how-to-btn {
+      margin-top: 24px; padding: 10px 28px; font-size: 15px;
+      cursor: pointer; border: 1px solid #333; border-radius: 4px; background: #fff;
+    }
+    #how-to-btn:hover { background: #f0f0f0; }
+
+    #featured { padding: 0 32px 40px; }
+    #featured-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    #featured-header h2 { font-size: 20px; font-weight: bold; }
+    #view-all-btn {
+      padding: 6px 14px; font-size: 13px; cursor: pointer;
+      border: 1px solid #aaa; border-radius: 4px; background: #fff;
+    }
+    #view-all-btn:hover { background: #f0f0f0; }
+
+    /* 공통 그리드 */
+    .bills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .bill-card { border: 1px solid #ddd; border-radius: 6px; padding: 16px; cursor: pointer; }
+    .bill-card:hover { background: #fafafa; }
+    .bill-card .tag { font-size: 11px; color: #888; margin-bottom: 6px; }
+    .bill-card .bill-title { font-size: 14px; font-weight: bold; line-height: 1.4; }
+    .bill-card .bill-desc { font-size: 12px; color: #666; margin-top: 8px; line-height: 1.5; }
+    .bill-card .bill-meta { font-size: 11px; color: #aaa; margin-top: 10px; }
+    .bill-card .proc-badge {
+      display: inline-block; margin-top: 8px;
+      font-size: 10px; padding: 2px 7px; border-radius: 10px;
+      background: #f0f0f0; color: #555;
+    }
+    .bill-card .proc-badge.enacted { background: #d1fae5; color: #065f46; }
+
+    /* ── 주제별 법안 ── */
+    #page-topics { padding: 32px; gap: 0; }
+    #topics-header { margin-bottom: 24px; }
+    #topics-header h2 { font-size: 24px; font-weight: bold; }
+    #topics-header p { margin-top: 8px; font-size: 15px; color: #555; }
+
+    .filter-block { margin-bottom: 20px; }
+    .filter-block .filter-label { font-size: 13px; font-weight: bold; color: #444; margin-bottom: 10px; }
+    #field-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+    .field-btn {
+      padding: 6px 14px; font-size: 13px;
+      border: 1px solid #ccc; border-radius: 20px; background: #fff; cursor: pointer;
+    }
+    .field-btn:hover { background: #f0f0f0; }
+    .field-btn.selected { background: #222; color: #fff; border-color: #222; }
+
+    #dropdown-filters { display: flex; gap: 12px; flex-wrap: wrap; }
+    .filter-select {
+      padding: 7px 12px; font-size: 13px;
+      border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; min-width: 140px;
+    }
+    .filter-divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+
+    #result-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+    }
+    #result-info { font-size: 15px; font-weight: bold; }
+    #result-info span { font-weight: normal; color: #555; margin-left: 8px; font-size: 13px; }
+    #sort-select {
+      padding: 6px 10px; font-size: 13px;
+      border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer;
+    }
+    .no-results { font-size: 14px; color: #999; padding: 32px 0; text-align: center; }
+
+    /* 페이지네이션 */
+    #pagination { display: flex; justify-content: center; gap: 6px; padding: 24px 0; }
+    .page-btn {
+      padding: 6px 12px; font-size: 13px; cursor: pointer;
+      border: 1px solid #ccc; border-radius: 4px; background: #fff;
+    }
+    .page-btn:hover { background: #f0f0f0; }
+    .page-btn.active { background: #222; color: #fff; border-color: #222; }
+    .page-btn:disabled { opacity: 0.4; cursor: default; }
+
+    /* ══ 법안 상세 오버레이 ══ */
+    #detail-overlay {
+      display: none; position: fixed; inset: 0;
+      background: #fff; z-index: 300; overflow-y: auto;
+    }
+    #detail-overlay.open { display: block; }
+    #detail-page { max-width: 760px; margin: 0 auto; padding: 28px 32px 80px; }
+
+    #detail-back {
+      background: none; border: none; font-size: 15px; cursor: pointer; color: #444;
+      display: flex; align-items: center; gap: 6px; margin-bottom: 28px; padding: 0;
+    }
+    #detail-back:hover { color: #000; }
+
+    #detail-meta-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    #detail-field-tag {
+      font-size: 12px; color: #555;
+      border: 1px solid #bbb; border-radius: 20px; padding: 3px 10px;
+    }
+    #detail-bill-no { font-size: 12px; color: #999; }
+
+    #detail-title-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px; margin-bottom: 14px;
+    }
+    #detail-title { font-size: 22px; font-weight: bold; line-height: 1.4; flex: 1; }
+    #sns-share-btn {
+      flex-shrink: 0; padding: 5px 12px; font-size: 12px; cursor: pointer;
+      border: 1px solid #ccc; border-radius: 4px; background: #fff;
+      white-space: nowrap; margin-top: 4px;
+    }
+    #sns-share-btn:hover { background: #f0f0f0; }
+
+    #detail-desc { font-size: 15px; color: #444; line-height: 1.7; margin-bottom: 14px; }
+    #detail-info {
+      display: flex; gap: 24px; flex-wrap: wrap;
+      font-size: 12px; color: #888; margin-bottom: 28px;
+    }
+    #detail-info span b { color: #555; font-weight: 600; }
+    .detail-divider { border: none; border-top: 1px solid #eee; margin: 24px 0; }
+    .section-title { font-size: 16px; font-weight: bold; margin-bottom: 16px; }
+
+    /* 타임라인 */
+    #timeline { display: flex; align-items: flex-start; overflow-x: auto; padding-bottom: 8px; }
+    .tl-step { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 90px; }
+    .tl-line-wrap { display: flex; align-items: center; width: 100%; }
+    .tl-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid #ccc; background: #fff; position: relative; z-index: 1; flex-shrink: 0;
+    }
+    .tl-dot.done { background: #222; border-color: #222; }
+    .tl-dot.current { background: #fff; border-color: #222; box-shadow: 0 0 0 3px rgba(0,0,0,0.15); }
+    .tl-connector { flex: 1; height: 2px; background: #ddd; }
+    .tl-connector.done { background: #222; }
+    .tl-label { font-size: 11px; color: #aaa; margin-top: 8px; text-align: center; line-height: 1.4; padding: 0 4px; }
+    .tl-label.done { color: #222; font-weight: 600; }
+    .tl-label.current { color: #222; font-weight: 700; }
+    .tl-date { font-size: 10px; color: #bbb; margin-top: 3px; text-align: center; }
+    .tl-date.done { color: #999; }
+
+    /* 영향 */
+    #impact-list { display: flex; flex-direction: column; gap: 10px; }
+    .impact-item { display: flex; gap: 12px; font-size: 14px; }
+    .impact-who { font-weight: bold; min-width: 70px; color: #333; flex-shrink: 0; }
+    .impact-effect { color: #555; line-height: 1.5; }
+
+    /* 주요 내용 */
+    #key-points { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .key-point { display: flex; gap: 10px; font-size: 14px; line-height: 1.6; color: #444; }
+    .key-point::before { content: '·'; font-weight: bold; color: #888; flex-shrink: 0; }
+
+    #source-btn {
+      display: inline-block; padding: 9px 20px; font-size: 13px; cursor: pointer;
+      border: 1px solid #333; border-radius: 4px; background: #fff;
+      text-decoration: none; color: #222;
+    }
+    #source-btn:hover { background: #f0f0f0; }
+
+    /* 시민 의견 */
+    #opinion-form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    #opinion-vote-row { display: flex; gap: 8px; align-items: center; }
+    .vote-btn {
+      padding: 8px 22px; font-size: 14px; cursor: pointer;
+      border: 1px solid #ccc; border-radius: 4px; background: #fff;
+    }
+    .vote-btn:hover { background: #f0f0f0; }
+    .vote-btn.selected-agree { background: #222; color: #fff; border-color: #222; }
+    .vote-btn.selected-disagree { background: #555; color: #fff; border-color: #555; }
+    #opinion-reason {
+      padding: 10px 12px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;
+      resize: vertical; min-height: 72px; font-family: inherit;
+    }
+    #opinion-submit {
+      align-self: flex-end; padding: 8px 22px; font-size: 14px;
+      cursor: pointer; border: 1px solid #333; border-radius: 4px; background: #fff;
+    }
+    #opinion-submit:hover { background: #f0f0f0; }
+
+    #opinions-list { display: flex; flex-direction: column; gap: 12px; }
+    .opinion-item { border: 1px solid #eee; border-radius: 6px; padding: 12px 16px; font-size: 13px; }
+    .opinion-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .opinion-stance { font-size: 12px; font-weight: bold; padding: 2px 8px; border-radius: 10px; }
+    .opinion-stance.agree { background: #222; color: #fff; }
+    .opinion-stance.disagree { background: #777; color: #fff; }
+    .opinion-date { font-size: 11px; color: #bbb; margin-left: auto; }
+    .opinion-text { color: #444; line-height: 1.5; }
+    .no-opinions { font-size: 13px; color: #bbb; padding: 12px 0; }
+
+    /* AI 로딩 */
+    .ai-loading {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: #aaa; padding: 4px 0;
+    }
+
+    /* ══ API 설정 모달 ══ */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4); z-index: 400;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #fff; border-radius: 8px; padding: 32px; max-width: 480px; width: 90%; }
+    .modal-box h2 { font-size: 18px; font-weight: bold; margin-bottom: 16px; }
+    .modal-box p { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px; }
+    .modal-box label { font-size: 13px; font-weight: bold; color: #444; display: block; margin-bottom: 6px; }
+    .modal-box input[type=text] {
+      width: 100%; padding: 9px 12px; font-size: 14px;
+      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 16px;
+    }
+    .modal-btn-row { display: flex; gap: 8px; justify-content: flex-end; }
+    .modal-btn {
+      padding: 8px 20px; font-size: 13px; cursor: pointer;
+      border: 1px solid #ccc; border-radius: 4px; background: #fff;
+    }
+    .modal-btn.primary { background: #222; color: #fff; border-color: #222; }
+    .modal-btn:hover { opacity: 0.85; }
+    .modal-note { font-size: 11px; color: #aaa; margin-top: 12px; }
+
+    /* 이용방법 모달 */
+    #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: center; justify-content: center; }
+    #modal-overlay.open { display: flex; }
+    #modal { background: #fff; border-radius: 8px; padding: 32px; max-width: 480px; width: 90%; }
+    #modal h2 { margin-bottom: 16px; font-size: 20px; }
+    #modal ol { padding-left: 20px; line-height: 2; font-size: 15px; color: #333; }
+    #modal-close { margin-top: 24px; padding: 8px 20px; cursor: pointer; float: right; }
+  </style>
+</head>
+<body>
+
+<!-- 상단 바 -->
+<div id="topbar">
+  <button id="menu-toggle" aria-label="메뉴 열기/닫기">☰</button>
+  <form id="search-form" onsubmit="handleSearch(event)">
+    <input id="search-input" type="text" placeholder="법안 이름, 키워드로 검색..." autocomplete="off" />
+    <button id="search-btn" type="submit">검색</button>
+  </form>
+  <span id="api-status-dot" title="API 연결 상태"></span>
+  <button id="api-settings-btn" onclick="openApiSettings()" title="API 설정">⚙</button>
+</div>
+
+<!-- 메인 레이아웃 -->
+<div id="layout">
+  <div id="sidebar">
+    <nav>
+      <a href="#" class="active" onclick="navigate('home', event)">홈</a>
+      <a href="#" onclick="navigate('topics', event)">주제별 법안</a>
+      <a href="#" onclick="navigate('petition', event)">국민 청원</a>
+    </nav>
+  </div>
+
+  <div id="content">
+
+    <!-- API 배너 -->
+    <div id="api-banner">
+      ⚠ API 키가 설정되지 않아 샘플 데이터를 표시합니다.
+      <button onclick="openApiSettings()">API 키 설정하기</button>
+    </div>
+
+    <!-- 홈 -->
+    <div id="page-home" class="page active">
+      <section id="hero">
+        <h1>알법</h1>
+        <p>내 삶을 바꾸는 법안, 쉽게 읽어드립니다.</p>
+        <button id="how-to-btn" onclick="openModal()">이용방법</button>
+      </section>
+      <section id="featured">
+        <div id="featured-header">
+          <h2>지금 주목할 법안</h2>
+          <button id="view-all-btn" onclick="navigate('topics', null)">전체보기</button>
+        </div>
+        <div id="home-bills-grid" class="bills-grid"></div>
+      </section>
+    </div>
+
+    <!-- 주제별 법안 -->
+    <div id="page-topics" class="page">
+      <div id="topics-header">
+        <h2>주제별 법안 둘러보기</h2>
+        <p>나의 관심사에 맞는 법안을 확인해보세요.</p>
+      </div>
+      <div class="filter-block">
+        <div class="filter-label">분야별</div>
+        <div id="field-buttons">
+          <button class="field-btn" data-field="전체" onclick="selectField(this)">전체</button>
+          <button class="field-btn" data-field="노동/고용" onclick="selectField(this)">노동/고용</button>
+          <button class="field-btn" data-field="부동산" onclick="selectField(this)">부동산</button>
+          <button class="field-btn" data-field="세금/재정" onclick="selectField(this)">세금/재정</button>
+          <button class="field-btn" data-field="교육" onclick="selectField(this)">교육</button>
+          <button class="field-btn" data-field="육아/가족" onclick="selectField(this)">육아/가족</button>
+          <button class="field-btn" data-field="의료/보건" onclick="selectField(this)">의료/보건</button>
+          <button class="field-btn" data-field="환경" onclick="selectField(this)">환경</button>
+          <button class="field-btn" data-field="디지털/AI" onclick="selectField(this)">디지털/AI</button>
+          <button class="field-btn" data-field="교통/인프라" onclick="selectField(this)">교통/인프라</button>
+          <button class="field-btn" data-field="농어업" onclick="selectField(this)">농어업</button>
+          <button class="field-btn" data-field="사법/인권" onclick="selectField(this)">사법/인권</button>
+          <button class="field-btn" data-field="안보/외교" onclick="selectField(this)">안보/외교</button>
+        </div>
+      </div>
+      <div class="filter-block">
+        <div id="dropdown-filters">
+          <div>
+            <div class="filter-label">직업별</div>
+            <select id="job-select" class="filter-select" onchange="applyLocalFilters()">
+              <option value="전체">전체</option>
+              <option value="학생">학생</option>
+              <option value="직장인">직장인</option>
+              <option value="자영업자">자영업자</option>
+              <option value="농어민">농어민</option>
+              <option value="의료인">의료인</option>
+              <option value="교직원">교직원</option>
+              <option value="공무원">공무원</option>
+              <option value="프리랜서">프리랜서</option>
+            </select>
+          </div>
+          <div>
+            <div class="filter-label">지역별</div>
+            <select id="region-select" class="filter-select" onchange="applyLocalFilters()">
+              <option value="전체">전체</option>
+              <option value="서울">서울</option>
+              <option value="부산">부산</option>
+              <option value="대구">대구</option>
+              <option value="인천">인천</option>
+              <option value="광주">광주</option>
+              <option value="대전">대전</option>
+              <option value="울산">울산</option>
+              <option value="세종">세종</option>
+              <option value="경기">경기</option>
+              <option value="강원">강원</option>
+              <option value="충북">충북</option>
+              <option value="충남">충남</option>
+              <option value="전북">전북</option>
+              <option value="전남">전남</option>
+              <option value="경북">경북</option>
+              <option value="경남">경남</option>
+              <option value="제주">제주</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <hr class="filter-divider" />
+      <div id="result-header">
+        <div id="result-info">검색결과 <span id="result-count"></span></div>
+        <div>
+          <select id="sort-select" onchange="applyLocalFilters()">
+            <option value="recent">최신순</option>
+            <option value="old">오래된순</option>
+            <option value="name">이름순</option>
+          </select>
+        </div>
+      </div>
+      <div id="topics-bills-grid" class="bills-grid"></div>
+      <div id="pagination"></div>
+    </div>
+
+    <!-- 국민 청원 -->
+    <div id="page-petition" class="page">
+      <div style="padding:60px 32px; color:#999; font-size:16px;">국민 청원 페이지는 준비 중입니다.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 법안 상세 오버레이 -->
+<div id="detail-overlay">
+  <div id="detail-page">
+    <button id="detail-back" onclick="closeDetail()">← 뒤로가기</button>
+    <div id="detail-meta-top">
+      <span id="detail-field-tag"></span>
+      <span id="detail-bill-no"></span>
+    </div>
+    <div id="detail-title-row">
+      <h1 id="detail-title"></h1>
+      <button id="sns-share-btn" onclick="shareDetail()">SNS 공유하기</button>
+    </div>
+    <p id="detail-desc"></p>
+    <div id="detail-info">
+      <span><b>대표발의</b>&nbsp;<span id="di-proposer"></span></span>
+      <span><b>발의일</b>&nbsp;<span id="di-date"></span></span>
+      <span><b>소관위원회</b>&nbsp;<span id="di-committee"></span></span>
+    </div>
+    <hr class="detail-divider" />
+    <div class="section-title">입법 진행 현황</div>
+    <div id="timeline"></div>
+    <hr class="detail-divider" />
+    <div class="section-title">누구에게 영향을 미치나요?</div>
+    <div id="impact-list"></div>
+    <hr class="detail-divider" />
+    <div class="section-title">주요 내용</div>
+    <div id="key-points"></div>
+    <br />
+    <a id="source-btn" href="#" target="_blank" rel="noopener">
+      국회 의안정보시스템에서 원문보기 →
+    </a>
+    <hr class="detail-divider" />
+    <div class="section-title">시민 의견</div>
+    <div id="opinion-form">
+      <div id="opinion-vote-row">
+        <button class="vote-btn" id="btn-agree" onclick="selectVote('agree')">찬성</button>
+        <button class="vote-btn" id="btn-disagree" onclick="selectVote('disagree')">반대</button>
+      </div>
+      <textarea id="opinion-reason" placeholder="이유를 간단히 작성해주세요. (선택)"></textarea>
+      <button id="opinion-submit" onclick="submitOpinion()">의견 등록</button>
+    </div>
+    <div id="opinions-list"></div>
+  </div>
+</div>
+
+<!-- 이용방법 모달 -->
+<div id="modal-overlay" onclick="closeModalOutside(event)">
+  <div id="modal">
+    <h2>이용방법</h2>
+    <ol>
+      <li>상단 검색창에 관심 있는 법안명이나 키워드를 입력하세요.</li>
+      <li>왼쪽 메뉴에서 주제별로 법안을 탐색할 수 있습니다.</li>
+      <li>법안 카드를 클릭하면 상세 내용을 확인할 수 있습니다.</li>
+      <li>국민 청원 메뉴에서 진행 중인 청원을 살펴보세요.</li>
+    </ol>
+    <button id="modal-close" onclick="closeModal()">닫기</button>
+  </div>
+</div>
+
+<!-- API 설정 모달 -->
+<div id="api-settings-overlay" class="modal-overlay" onclick="closeApiSettingsOutside(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <h2>API 키 설정</h2>
+
+    <label for="api-key-input">열린국회정보 API 키</label>
+    <input type="text" id="api-key-input" placeholder="발급받은 인증키를 입력하세요" />
+    <p style="font-size:11px;color:#aaa;margin-top:-10px;margin-bottom:16px;">
+      발급: <a href="https://open.assembly.go.kr/portal/openapi/main.do" target="_blank" rel="noopener">open.assembly.go.kr → 마이페이지 → 인증키 발급</a>
+    </p>
+
+    <label for="claude-key-input">Claude API 키 <span style="font-weight:normal;color:#888;">(법안 상세 자동 생성)</span></label>
+    <input type="password" id="claude-key-input" placeholder="sk-ant-..." />
+    <p style="font-size:11px;color:#aaa;margin-top:-10px;margin-bottom:16px;">
+      발급: <a href="https://console.anthropic.com/" target="_blank" rel="noopener">console.anthropic.com → API Keys</a>
+    </p>
+
+    <div class="modal-btn-row">
+      <button class="modal-btn" onclick="closeApiSettings()">취소</button>
+      <button class="modal-btn primary" onclick="saveApiKey()">저장 및 데이터 불러오기</button>
+    </div>
+    <p class="modal-note">키는 브라우저 로컬스토리지에만 저장되며 외부로 전송되지 않습니다.</p>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════
+   설정 & 상수
+════════════════════════════ */
+const API_BASE = 'https://open.assembly.go.kr/portal/openapi';
+const BILL_LIST_EP = 'nzmimeepazxkubdpn'; // 의안기본정보
+const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+const TL_STEPS = ['발의', '위원회 회부', '위원회 심사', '본회의 의결', '정부 이송', '공포/시행'];
+const PAGE_SIZE = 30;
+
+let apiKey = localStorage.getItem('assemblyApiKey') || '';
+let claudeApiKey = localStorage.getItem('claudeApiKey') || '';
+let currentPage = 1;
+let totalCount = 0;
+let apiLoaded = false;
+
+// 불러온 법안 풀
+let loadedBills = [];
+
+// Claude가 생성한 상세 정보 캐시 (billNo 기준)
+const billDetailsCache = {};
+
+/* ════════════════════════════
+   위원회 → 분야 매핑
+════════════════════════════ */
+const COMMITTEE_FIELD = {
+  '환경노동위원회': '노동/고용',
+  '기획재정위원회': '세금/재정',
+  '국토교통위원회': '교통/인프라',
+  '교육위원회': '교육',
+  '보건복지위원회': '의료/보건',
+  '여성가족위원회': '육아/가족',
+  '과학기술정보방송통신위원회': '디지털/AI',
+  '법제사법위원회': '사법/인권',
+  '농림축산식품해양수산위원회': '농어업',
+  '외교통일위원회': '안보/외교',
+  '국방위원회': '안보/외교',
+  '행정안전위원회': '디지털/AI',
+  '산업통상자원중소벤처기업위원회': '세금/재정',
+  '정무위원회': '세금/재정',
+  '문화체육관광위원회': '교육',
+  '국회운영위원회': '사법/인권',
+};
+
+function committeeToField(committee) {
+  for (const [key, val] of Object.entries(COMMITTEE_FIELD)) {
+    if (committee.includes(key) || key.includes(committee)) return val;
+  }
+  return '기타';
+}
+
+/* ════════════════════════════
+   처리결과 → 타임라인 단계
+════════════════════════════ */
+function procResultToStage(proc) {
+  if (!proc) return 0;
+  const p = proc.trim();
+  if (p.includes('공포') || p.includes('시행')) return 5;
+  if (p.includes('정부이송') || p.includes('이송')) return 4;
+  if (p.includes('본회의') || p.includes('가결') || p.includes('부결') || p.includes('수정가결')) return 3;
+  if (p.includes('체계') || p.includes('자구') || p.includes('법사위')) return 2;
+  if (p.includes('위원회') || p.includes('심사') || p.includes('소관위')) return 2;
+  if (p.includes('회부') || p.includes('접수')) return 1;
+  return 0;
+}
+
+/* ════════════════════════════
+   API 호출
+════════════════════════════ */
+async function apiFetch(params) {
+  const qs = new URLSearchParams({ KEY: apiKey, Type: 'json', AGE: 22, ...params });
+  const directUrl = `${API_BASE}/${BILL_LIST_EP}?${qs}`;
+
+  // 직접 시도
+  try {
+    const res = await fetch(directUrl, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error('http ' + res.status);
+    return await res.json();
+  } catch (e) {
+    // CORS 우회 프록시 시도
+    try {
+      const proxyUrl = CORS_PROXY + encodeURIComponent(directUrl);
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(12000) });
+      if (!res.ok) throw new Error('proxy http ' + res.status);
+      return await res.json();
+    } catch (e2) {
+      throw new Error('API 호출 실패: ' + e2.message);
+    }
+  }
+}
+
+function parseApiRows(data) {
+  const sections = data[BILL_LIST_EP];
+  if (!Array.isArray(sections)) throw new Error('응답 형식 오류');
+  const headSection = sections.find(s => s.head);
+  const rowSection = sections.find(s => s.row);
+  const total = headSection?.head?.[0]?.list_total_count ?? 0;
+  const rows = rowSection?.row ?? [];
+
+  // 에러 코드 확인
+  const resultCode = headSection?.head?.[1]?.RESULT?.CODE || '';
+  if (resultCode && !resultCode.startsWith('INFO')) throw new Error(headSection.head[1].RESULT.MESSAGE);
+
+  return { total, rows };
+}
+
+function mapApiRow(row) {
+  const field = committeeToField(row.COMMITTEE || '');
+  const stage = procResultToStage(row.PROC_RESULT || '');
+  const date = (row.PROPOSE_DT || row.SUBMIT_DT || '').replace(/\./g, '-');
+  return {
+    field,
+    title: row.BILL_NAME || '',
+    billNo: row.BILL_NO || '',
+    proposer: row.PROPOSER || '',
+    committee: row.COMMITTEE || '',
+    date,
+    procResult: row.PROC_RESULT || '',
+    stage,
+    stageDates: Array(6).fill(''),
+    desc: '', // API에서 미제공 → 상세 페이지에서 안내
+    jobs: ['전체'],
+    regions: ['전체'],
+    impact: [],
+    keyPoints: [],
+    sourceUrl: row.LINK_URL || `https://likms.assembly.go.kr/bill/billDetail.do?billId=${row.BILL_ID || ''}`,
+    fromApi: true,
+  };
+}
+
+/* ════════════════════════════
+   데이터 로드 진입점
+════════════════════════════ */
+let selectedField = '전체';
+let currentKeyword = '';
+
+async function loadBills({ page = 1, keyword = '', fieldOverride = null } = {}) {
+  if (fieldOverride !== null) selectedField = fieldOverride;
+  currentPage = page;
+  currentKeyword = keyword;
+
+  if (!apiKey) {
+    // 샘플 데이터 사용
+    apiLoaded = false;
+    setApiStatus('none');
+    loadedBills = SAMPLE_BILLS;
+    applyLocalFilters();
+    return;
+  }
+
+  showGridLoading('topics-bills-grid');
+  try {
+    const params = { pIndex: page, pSize: PAGE_SIZE };
+    if (keyword) params.BILL_NAME = keyword;
+
+    // 분야별 → 위원회 역매핑
+    if (selectedField !== '전체') {
+      const committee = Object.entries(COMMITTEE_FIELD).find(([, v]) => v === selectedField)?.[0] || '';
+      if (committee) params.COMMITTEE = committee;
+    }
+
+    const data = await apiFetch(params);
+    const { total, rows } = parseApiRows(data);
+    totalCount = total;
+    loadedBills = rows.map(mapApiRow);
+    apiLoaded = true;
+    setApiStatus('live');
+    document.getElementById('api-banner').classList.add('hidden');
+
+    document.getElementById('result-count').textContent = `총 ${total.toLocaleString()}건`;
+    renderBillsGrid('topics-bills-grid', loadedBills);
+    renderPagination(page, Math.ceil(total / PAGE_SIZE));
+  } catch (err) {
+    setApiStatus('error');
+    console.error(err);
+    // 폴백: 샘플
+    apiLoaded = false;
+    loadedBills = SAMPLE_BILLS;
+    applyLocalFilters();
+    document.getElementById('topics-bills-grid').insertAdjacentHTML('afterbegin',
+      `<div style="color:#ef4444;font-size:13px;margin-bottom:12px;">⚠ API 오류: ${err.message}. 샘플 데이터를 표시합니다.</div>`
+    );
+  }
+}
+
+async function loadHomeBills() {
+  if (!apiKey) {
+    renderBillsGrid('home-bills-grid', SAMPLE_BILLS.slice(0, 6));
+    return;
+  }
+  showGridLoading('home-bills-grid');
+  try {
+    const data = await apiFetch({ pIndex: 1, pSize: 6 });
+    const { rows } = parseApiRows(data);
+    const bills = rows.map(mapApiRow);
+    renderBillsGrid('home-bills-grid', bills);
+    setApiStatus('live');
+    document.getElementById('api-banner').classList.add('hidden');
+  } catch {
+    renderBillsGrid('home-bills-grid', SAMPLE_BILLS.slice(0, 6));
+  }
+}
+
+/* ════════════════════════════
+   로컬 필터 (직업별·지역별·정렬)
+   — API 사용 시에는 분야별만 서버 필터, 나머지는 로컬
+════════════════════════════ */
+function applyLocalFilters() {
+  const job = document.getElementById('job-select').value;
+  const region = document.getElementById('region-select').value;
+  const sort = document.getElementById('sort-select').value;
+
+  let results = loadedBills.filter(b => {
+    const fieldMatch = selectedField === '전체' || b.field === selectedField;
+    const jobMatch = job === '전체' || (b.jobs || []).includes('전체') || (b.jobs || []).includes(job);
+    const regionMatch = region === '전체' || (b.regions || []).includes('전체') || (b.regions || []).includes(region);
+    return fieldMatch && jobMatch && regionMatch;
+  });
+
+  if (sort === 'recent') results.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  else if (sort === 'old') results.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  else results.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+
+  if (!apiLoaded) {
+    document.getElementById('result-count').textContent = `총 ${results.length}건`;
+    renderPagination(1, 1);
+  }
+  renderBillsGrid('topics-bills-grid', results);
+}
+
+/* ════════════════════════════
+   렌더링 유틸
+════════════════════════════ */
+function showGridLoading(gridId) {
+  document.getElementById(gridId).innerHTML =
+    '<div class="loading-wrap"><div class="spinner"></div>법안 데이터를 불러오는 중...</div>';
+}
+
+function renderBillsGrid(gridId, bills) {
+  const grid = document.getElementById(gridId);
+  if (!bills || bills.length === 0) {
+    grid.innerHTML = '<div class="no-results">조건에 맞는 법안이 없습니다.</div>';
+    return;
+  }
+  grid.innerHTML = bills.map((b, i) => billCardHTML(b, i)).join('');
+}
+
+function billCardHTML(b, localIdx) {
+  const globalIdx = loadedBills.indexOf(b) !== -1 ? loadedBills.indexOf(b) : localIdx;
+  const isEnacted = b.stage >= 5;
+  const procLabel = b.procResult || (b.stage < 1 ? '발의' : TL_STEPS[b.stage] || '');
+  return `
+    <div class="bill-card" onclick="openBill(${globalIdx})">
+      <div class="tag">${b.field}</div>
+      <div class="bill-title">${b.title}</div>
+      ${b.desc ? `<div class="bill-desc">${b.desc}</div>` : ''}
+      <div class="bill-meta">${(b.date || '').replace(/-/g,'.')} 발의</div>
+      ${procLabel ? `<span class="proc-badge${isEnacted ? ' enacted' : ''}">${procLabel}</span>` : ''}
+    </div>`;
+}
+
+function renderPagination(current, totalPages) {
+  const el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+  const start = Math.max(1, current - 2);
+  const end = Math.min(totalPages, current + 2);
+  let html = `<button class="page-btn" onclick="goPage(${current - 1})" ${current === 1 ? 'disabled' : ''}>←</button>`;
+  for (let p = start; p <= end; p++) {
+    html += `<button class="page-btn${p === current ? ' active' : ''}" onclick="goPage(${p})">${p}</button>`;
+  }
+  html += `<button class="page-btn" onclick="goPage(${current + 1})" ${current === totalPages ? 'disabled' : ''}>→</button>`;
+  el.innerHTML = html;
+}
+
+function goPage(p) {
+  if (!apiLoaded) return;
+  loadBills({ page: p, keyword: currentKeyword });
+  document.getElementById('page-topics').scrollTop = 0;
+}
+
+/* ════════════════════════════
+   분야별 버튼
+════════════════════════════ */
+function selectField(btn) {
+  document.querySelectorAll('.field-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedField = btn.dataset.field;
+  if (apiLoaded) {
+    loadBills({ page: 1, keyword: currentKeyword });
+  } else {
+    applyLocalFilters();
+  }
+}
+
+/* ════════════════════════════
+   검색
+════════════════════════════ */
+function handleSearch(e) {
+  e.preventDefault();
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  navigate('topics', null);
+  loadBills({ page: 1, keyword: q });
+}
+
+/* ════════════════════════════
+   페이지 전환
+════════════════════════════ */
+function navigate(page, e) {
+  if (e) e.preventDefault();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#sidebar nav a').forEach(a => a.classList.remove('active'));
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+  const idx = { home: 0, topics: 1, petition: 2 }[page];
+  if (idx !== undefined) document.querySelectorAll('#sidebar nav a')[idx].classList.add('active');
+  if (page === 'topics') loadBills({ page: 1 });
+}
+
+/* ════════════════════════════
+   Claude API — 상세 자동 생성
+════════════════════════════ */
+async function generateBillDetails(bill) {
+  const cacheKey = bill.billNo || bill.title;
+  if (billDetailsCache[cacheKey]) return billDetailsCache[cacheKey];
+
+  if (!claudeApiKey) return null;
+
+  const prompt = `다음 한국 국회 법안의 상세 정보를 JSON으로 작성해주세요.
+
+법안명: ${bill.title}
+소관위원회: ${bill.committee || '미상'}
+처리상태: ${bill.procResult || '발의'}
+발의일: ${bill.date || ''}
+
+아래 JSON 형식만 응답하세요 (다른 텍스트 없이):
+{
+  "desc": "법안의 핵심 내용을 일반 시민이 이해하기 쉽게 2~3문장으로 설명",
+  "impact": [
+    {"who": "영향받는 대상 (예: 직장인, 자영업자, 학생 등)", "effect": "구체적인 영향 한 문장"}
+  ],
+  "keyPoints": [
+    "주요 조항 또는 변경 내용 1",
+    "주요 조항 또는 변경 내용 2",
+    "주요 조항 또는 변경 내용 3"
+  ]
+}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': claudeApiKey,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+      'anthropic-dangerous-allow-browser': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1024,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+
+  if (!res.ok) throw new Error('Claude API 오류 ' + res.status);
+  const data = await res.json();
+  const text = data.content?.[0]?.text || '';
+
+  // JSON 파싱 (마크다운 코드블록 제거 후)
+  const cleaned = text.replace(/```json\n?|\n?```/g, '').trim();
+  const result = JSON.parse(cleaned);
+  billDetailsCache[cacheKey] = result;
+  return result;
+}
+
+function setDetailLoading(isLoading) {
+  const placeholder = '<div class="ai-loading"><div class="spinner"></div>AI가 내용을 분석 중입니다...</div>';
+  if (isLoading) {
+    document.getElementById('detail-desc').innerHTML = placeholder;
+    document.getElementById('impact-list').innerHTML = placeholder;
+    document.getElementById('key-points').innerHTML = placeholder;
+  }
+}
+
+function renderImpact(impact) {
+  if (!impact || impact.length === 0) return;
+  document.getElementById('impact-list').innerHTML = impact.map(item => `
+    <div class="impact-item">
+      <span class="impact-who">${item.who}</span>
+      <span class="impact-effect">${item.effect}</span>
+    </div>`).join('');
+}
+
+function renderKeyPoints(keyPoints) {
+  if (!keyPoints || keyPoints.length === 0) return;
+  document.getElementById('key-points').innerHTML =
+    keyPoints.map(kp => `<div class="key-point">${kp}</div>`).join('');
+}
+
+/* ════════════════════════════
+   법안 상세
+════════════════════════════ */
+let currentBillIdx = null;
+let currentVote = null;
+const opinionsDB = {};
+
+async function openBill(idx) {
+  const b = loadedBills[idx];
+  if (!b) return;
+  currentBillIdx = idx;
+  currentVote = null;
+
+  // 고정 정보 먼저 렌더링
+  document.getElementById('detail-field-tag').textContent = b.field;
+  document.getElementById('detail-bill-no').textContent = b.billNo ? '의안번호 ' + b.billNo : '';
+  document.getElementById('detail-title').textContent = b.title;
+  document.getElementById('di-proposer').textContent = b.proposer || '-';
+  document.getElementById('di-date').textContent = (b.date || '').replace(/-/g, '.');
+  document.getElementById('di-committee').textContent = b.committee || '-';
+  document.getElementById('source-btn').href = b.sourceUrl || 'https://likms.assembly.go.kr/bill/main.do';
+  document.getElementById('btn-agree').className = 'vote-btn';
+  document.getElementById('btn-disagree').className = 'vote-btn';
+  document.getElementById('opinion-reason').value = '';
+  renderOpinions(idx);
+  renderTimeline(b);
+
+  // 오버레이 열기
+  const overlay = document.getElementById('detail-overlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+
+  // 샘플 데이터는 이미 내용 있음
+  if (!b.fromApi) {
+    document.getElementById('detail-desc').textContent = b.desc || '';
+    renderImpact(b.impact);
+    renderKeyPoints(b.keyPoints);
+    return;
+  }
+
+  // API 데이터: 캐시 확인 후 Claude 호출
+  const cacheKey = b.billNo || b.title;
+  if (billDetailsCache[cacheKey]) {
+    const cached = billDetailsCache[cacheKey];
+    document.getElementById('detail-desc').textContent = cached.desc || '';
+    renderImpact(cached.impact);
+    renderKeyPoints(cached.keyPoints);
+    return;
+  }
+
+  if (!claudeApiKey) {
+    document.getElementById('detail-desc').textContent = b.desc || '원문을 통해 상세 내용을 확인하세요.';
+    document.getElementById('impact-list').innerHTML = '<div class="impact-item"><span class="impact-effect" style="color:#aaa">Claude API 키를 설정하면 자동으로 분석됩니다. (⚙ 설정)</span></div>';
+    document.getElementById('key-points').innerHTML = '<div class="key-point" style="color:#aaa">Claude API 키를 설정하면 주요 내용이 자동으로 생성됩니다.</div>';
+    return;
+  }
+
+  // 로딩 표시 후 Claude 호출
+  setDetailLoading(true);
+  try {
+    const result = await generateBillDetails(b);
+    if (result) {
+      document.getElementById('detail-desc').textContent = result.desc || '';
+      renderImpact(result.impact);
+      renderKeyPoints(result.keyPoints);
+    }
+  } catch (err) {
+    console.error('Claude 생성 실패:', err);
+    document.getElementById('detail-desc').textContent = b.desc || '내용을 불러오지 못했습니다.';
+    document.getElementById('impact-list').innerHTML = `<div class="impact-item"><span class="impact-effect" style="color:#e55">분석 오류: ${err.message}</span></div>`;
+    document.getElementById('key-points').innerHTML = '<div class="key-point" style="color:#aaa">원문 링크에서 전문을 확인해주세요.</div>';
+  }
+}
+
+function renderTimeline(b) {
+  const stage = b.stage ?? 0;
+  const stageDates = b.stageDates || Array(6).fill('');
+  const html = TL_STEPS.map((label, i) => {
+    const isDone = i < stage;
+    const isCurrent = i === stage;
+    const dotCls = isDone ? 'tl-dot done' : isCurrent ? 'tl-dot current' : 'tl-dot';
+    const labelCls = isDone ? 'tl-label done' : isCurrent ? 'tl-label current' : 'tl-label';
+    const dateCls = isDone ? 'tl-date done' : 'tl-date';
+    const connDone = i <= stage;
+    return `
+      <div class="tl-step">
+        <div class="tl-line-wrap">
+          ${i > 0 ? `<div class="tl-connector${connDone ? ' done' : ''}"></div>` : ''}
+          <div class="${dotCls}"></div>
+          ${i < TL_STEPS.length - 1 ? `<div class="tl-connector${connDone ? ' done' : ''}"></div>` : ''}
+        </div>
+        <div class="${labelCls}">${label}</div>
+        <div class="${dateCls}">${stageDates[i] || ''}</div>
+      </div>`;
+  }).join('');
+  document.getElementById('timeline').innerHTML = html;
+}
+
+function closeDetail() {
+  document.getElementById('detail-overlay').classList.remove('open');
+}
+
+function shareDetail() {
+  const b = loadedBills[currentBillIdx];
+  const text = `[알법] ${b.title}`;
+  if (navigator.share) {
+    navigator.share({ title: b.title, text, url: location.href });
+  } else {
+    navigator.clipboard.writeText(`${text}\n${b.sourceUrl || location.href}`)
+      .then(() => alert('링크가 클립보드에 복사되었습니다.'))
+      .catch(() => alert('공유 기능을 지원하지 않는 브라우저입니다.'));
+  }
+}
+
+function selectVote(v) {
+  currentVote = v;
+  document.getElementById('btn-agree').className = v === 'agree' ? 'vote-btn selected-agree' : 'vote-btn';
+  document.getElementById('btn-disagree').className = v === 'disagree' ? 'vote-btn selected-disagree' : 'vote-btn';
+}
+
+function submitOpinion() {
+  if (!currentVote) { alert('찬성 또는 반대를 먼저 선택해주세요.'); return; }
+  const reason = document.getElementById('opinion-reason').value.trim();
+  if (!opinionsDB[currentBillIdx]) opinionsDB[currentBillIdx] = [];
+  const now = new Date();
+  opinionsDB[currentBillIdx].unshift({
+    vote: currentVote, reason,
+    date: `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`
+  });
+  currentVote = null;
+  document.getElementById('btn-agree').className = 'vote-btn';
+  document.getElementById('btn-disagree').className = 'vote-btn';
+  document.getElementById('opinion-reason').value = '';
+  renderOpinions(currentBillIdx);
+}
+
+function renderOpinions(idx) {
+  const list = document.getElementById('opinions-list');
+  const items = opinionsDB[idx] || [];
+  if (items.length === 0) {
+    list.innerHTML = '<div class="no-opinions">아직 등록된 의견이 없습니다. 첫 번째 의견을 남겨보세요.</div>';
+    return;
+  }
+  list.innerHTML = items.map(op => `
+    <div class="opinion-item">
+      <div class="opinion-header">
+        <span class="opinion-stance ${op.vote}">${op.vote === 'agree' ? '찬성' : '반대'}</span>
+        <span class="opinion-date">${op.date}</span>
+      </div>
+      ${op.reason ? `<div class="opinion-text">${op.reason}</div>` : ''}
+    </div>`).join('');
+}
+
+/* ════════════════════════════
+   API 설정 모달
+════════════════════════════ */
+function openApiSettings() {
+  document.getElementById('api-key-input').value = apiKey;
+  document.getElementById('claude-key-input').value = claudeApiKey;
+  document.getElementById('api-settings-overlay').classList.add('open');
+}
+function closeApiSettings() {
+  document.getElementById('api-settings-overlay').classList.remove('open');
+}
+function closeApiSettingsOutside(e) {
+  if (e.target === document.getElementById('api-settings-overlay')) closeApiSettings();
+}
+function saveApiKey() {
+  const key = document.getElementById('api-key-input').value.trim();
+  const cKey = document.getElementById('claude-key-input').value.trim();
+  apiKey = key;
+  claudeApiKey = cKey;
+  localStorage.setItem('assemblyApiKey', key);
+  localStorage.setItem('claudeApiKey', cKey);
+  // 캐시 초기화 (키 변경 시)
+  Object.keys(billDetailsCache).forEach(k => delete billDetailsCache[k]);
+  closeApiSettings();
+  const activePage = document.querySelector('.page.active');
+  if (activePage?.id === 'page-home') loadHomeBills();
+  else if (activePage?.id === 'page-topics') loadBills({ page: 1 });
+  if (key) {
+    document.getElementById('api-banner').classList.add('hidden');
+  } else {
+    document.getElementById('api-banner').classList.remove('hidden');
+    setApiStatus('none');
+  }
+}
+
+function setApiStatus(state) {
+  const dot = document.getElementById('api-status-dot');
+  dot.className = 'api-status-dot';
+  if (state === 'live') { dot.classList.add('live'); dot.title = 'API 연결됨'; }
+  else if (state === 'error') { dot.classList.add('error'); dot.title = 'API 오류'; }
+  else { dot.title = 'API 미연결 (샘플 데이터)'; }
+}
+
+/* ════════════════════════════
+   이용방법 모달
+════════════════════════════ */
+function openModal() { document.getElementById('modal-overlay').classList.add('open'); }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+
+/* ════════════════════════════
+   사이드바
+════════════════════════════ */
+document.getElementById('menu-toggle').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('closed');
+});
+
+/* ════════════════════════════
+   샘플 데이터 (API 키 미설정 시 폴백)
+════════════════════════════ */
+const SAMPLE_BILLS = [
+  { field:'노동/고용', jobs:['직장인','프리랜서','자영업자'], regions:['서울','경기','부산'], title:'최저임금법 일부개정법률안', desc:'최저임금 결정 기준에 생계비 외 물가상승률을 반영', date:'2026-04-10', billNo:'2200341', proposer:'김민준 의원 외 11인', committee:'환경노동위원회', stage:2, procResult:'위원회 심사', stageDates:['2026.04.10','2026.04.15','2026.04.21','','',''], impact:[{who:'직장인',effect:'최저임금 인상 폭이 물가에 연동되어 실질 임금이 보전됩니다.'},{who:'자영업자',effect:'인건비 부담이 커질 수 있으나, 소비 여력 증가로 매출에도 영향을 줄 수 있습니다.'}], keyPoints:['최저임금 결정 시 소비자물가지수 상승률을 의무적으로 고려하도록 규정','최저임금위원회 심의 기간을 현행보다 30일 단축','위반 사업주에 대한 과태료 상한을 2천만 원에서 3천만 원으로 상향'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'부동산', jobs:['직장인','자영업자'], regions:['서울','경기','인천'], title:'주택임대차보호법 일부개정법률안', desc:'전세사기 피해자 보호를 위한 임차인 우선변제권 강화', date:'2026-04-08', billNo:'2200322', proposer:'최수아 의원 외 19인', committee:'법제사법위원회', stage:2, procResult:'위원회 심사', stageDates:['2026.04.08','2026.04.12','2026.04.20','','',''], impact:[{who:'직장인',effect:'집주인 파산 시 보증금을 우선 변제받을 가능성이 높아집니다.'}], keyPoints:['임차인 우선변제권 적용 범위를 보증금 전액으로 상향','전세보증보험 가입 의무화','전세사기 피해 임차인 공공임대 우선 공급'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'교육', jobs:['학생','교직원'], regions:['전체'], title:'고등교육법 일부개정법률안', desc:'대학 등록금 동결 및 국가장학금 확대 지원 근거 마련', date:'2026-04-07', billNo:'2200318', proposer:'윤채린 의원 외 13인', committee:'교육위원회', stage:1, procResult:'위원회 회부', stageDates:['2026.04.07','2026.04.14','','','',''], impact:[{who:'학생',effect:'국가장학금 지원 소득분위가 8분위에서 10분위로 확대됩니다.'}], keyPoints:['등록금 인상률 상한을 소비자물가 상승률 이내로 제한','국가장학금 지원 대상 전체 재학생의 60%로 확대'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'의료/보건', jobs:['의료인','직장인'], regions:['전체'], title:'국민건강보험법 일부개정법률안', desc:'비급여 항목의 단계적 급여화 및 실손보험 연계 규정 개선', date:'2026-04-05', billNo:'2200308', proposer:'조현우 의원 외 16인', committee:'보건복지위원회', stage:2, procResult:'위원회 심사', stageDates:['2026.04.05','2026.04.10','2026.04.19','','',''], impact:[{who:'직장인',effect:'도수치료 등 일부 항목이 급여화되어 본인 부담이 줄어듭니다.'}], keyPoints:['비급여 진료비 항목 중 의학적 필요성 인정 항목 단계적 급여 전환','실손보험 청구 간소화 시스템 연동 의무화'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'환경', jobs:['농어민','직장인'], regions:['전체'], title:'탄소중립·녹색성장 기본법 일부개정법률안', desc:'2035년 온실가스 감축 목표 상향 및 이행 점검 강화', date:'2026-04-03', billNo:'2200296', proposer:'문지안 의원 외 17인', committee:'환경노동위원회', stage:1, procResult:'위원회 회부', stageDates:['2026.04.03','2026.04.09','','','',''], impact:[{who:'직장인',effect:'대형 제조업체 탄소세 부과로 일부 소비재 가격이 변동될 수 있습니다.'}], keyPoints:['2035년 NDC 목표를 2018년 대비 50% 감축으로 상향 설정','탄소중립 이행 점검 결과를 매년 국회에 보고'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'디지털/AI', jobs:['직장인','프리랜서'], regions:['서울','경기'], title:'인공지능 기본법안', desc:'AI 서비스 제공자의 투명성 의무와 피해 구제 절차 규정', date:'2026-04-01', billNo:'2200281', proposer:'이다현 의원 외 24인', committee:'과학기술정보방송통신위원회', stage:2, procResult:'위원회 심사', stageDates:['2026.04.01','2026.04.07','2026.04.16','','',''], impact:[{who:'직장인',effect:'AI가 채용·인사에 활용될 경우 그 기준을 공개하도록 의무화됩니다.'},{who:'프리랜서',effect:'AI 생성물 저작권 귀속 기준이 명확해집니다.'}], keyPoints:['고위험 AI 시스템 사용 사실 고지 의무 부과','피해 구제를 위한 분쟁조정위원회 설치','공공기관 AI 도입 시 알고리즘 영향평가 의무화'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'세금/재정', jobs:['직장인','자영업자','프리랜서'], regions:['전체'], title:'소득세법 일부개정법률안', desc:'근로소득세 중간 과세구간 신설로 세 부담 완화', date:'2026-04-05', billNo:'2200305', proposer:'강도윤 의원 외 22인', committee:'기획재정위원회', stage:2, procResult:'위원회 심사', stageDates:['2026.04.05','2026.04.09','2026.04.17','','',''], impact:[{who:'직장인',effect:'연소득 5,000만~8,000만 원 구간에 새 세율 적용으로 세금이 줄어듭니다.'}], keyPoints:['소득세 과세구간 5,000만~8,000만 원 구간 신설 (세율 35%)','근로소득공제 한도 2,000만→2,500만 원 상향'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'육아/가족', jobs:['직장인'], regions:['전체'], title:'남녀고용평등법 일부개정법률안', desc:'배우자 출산 휴가를 10일에서 20일로 확대', date:'2026-04-09', billNo:'2200330', proposer:'신예진 의원 외 18인', committee:'환경노동위원회', stage:1, procResult:'위원회 회부', stageDates:['2026.04.09','2026.04.15','','','',''], impact:[{who:'직장인',effect:'배우자 출산 시 최대 20일 유급 휴가를 사용할 수 있습니다.'}], keyPoints:['배우자 출산 휴가 기간 10일→20일 확대, 전 기간 유급 보장','5인 미만 사업장도 단계적으로 적용'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'교통/인프라', jobs:['직장인','자영업자'], regions:['서울','경기','인천'], title:'대중교통법 일부개정법률안', desc:'광역버스 요금 상한제 도입 및 환승 할인 범위 확대', date:'2026-04-06', billNo:'2200311', proposer:'배수진 의원 외 9인', committee:'국토교통위원회', stage:1, procResult:'위원회 회부', stageDates:['2026.04.06','2026.04.12','','','',''], impact:[{who:'직장인',effect:'수도권 광역버스 요금 인상이 제한되어 통근 비용 부담이 줄어듭니다.'}], keyPoints:['광역버스 요금 연간 인상률 상한 소비자물가 상승률 이하 설정','수도권 통합 환승 할인 적용 구간 30% 확대'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'사법/인권', jobs:['전체'], regions:['전체'], title:'형사소송법 일부개정법률안', desc:'피의자 국선변호인 접견권 보장 시기를 수사 초기로 앞당김', date:'2026-04-02', billNo:'2200285', proposer:'장미래 의원 외 13인', committee:'법제사법위원회', stage:2, procResult:'위원회 심사', stageDates:['2026.04.02','2026.04.07','2026.04.16','','',''], impact:[{who:'직장인',effect:'형사 피의자가 된 경우 수사 초기부터 국선 변호인의 조력을 받을 수 있습니다.'}], keyPoints:['피의자 국선 변호인 선임 시점을 체포·구속 즉시로 앞당김','미성년 피의자 신문 시 국선변호인 참여 의무화'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'농어업', jobs:['농어민'], regions:['전남','전북','경북','경남','강원'], title:'농업소득 보전법 일부개정법률안', desc:'쌀 변동직불금 지급 단가 인상 및 밭 작물 지원 확대', date:'2026-04-04', billNo:'2200300', proposer:'황인호 의원 외 10인', committee:'농림축산식품해양수산위원회', stage:1, procResult:'위원회 회부', stageDates:['2026.04.04','2026.04.10','','','',''], impact:[{who:'농어민',effect:'쌀 목표가격 인상으로 시장가격 하락 시 지급되는 직불금이 늘어납니다.'}], keyPoints:['쌀 변동직불금 기준 목표가격 80kg당 21만→24만 원 인상','밭 작물 공익직불금 단가를 논 직불금의 70%로 상향'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+  { field:'안보/외교', jobs:['공무원'], regions:['전체'], title:'재외동포법 일부개정법률안', desc:'재외동포 금융·행정 서비스 접근성 개선 및 지원 체계 강화', date:'2026-03-13', billNo:'2200131', proposer:'민지혜 의원 외 5인', committee:'외교통일위원회', stage:5, procResult:'공포', stageDates:['2026.03.13','2026.03.16','2026.03.24','2026.04.02','2026.04.07','2026.04.14'], impact:[{who:'공무원',effect:'재외동포 전담 행정 인력 확충으로 영사관 업무가 늘어납니다.'}], keyPoints:['재외동포 비대면 금융 서비스 개설 허용 기준 마련','재외공관 전자행정 서비스 확대 예산 확보 의무화'], sourceUrl:'https://likms.assembly.go.kr/bill/main.do' },
+];
+
+/* ════════════════════════════
+   초기화
+════════════════════════════ */
+document.querySelector('.field-btn[data-field="전체"]').classList.add('selected');
+
+if (!apiKey) {
+  document.getElementById('api-banner').classList.remove('hidden');
+  setApiStatus('none');
+} else {
+  document.getElementById('api-banner').classList.add('hidden');
+}
+
+loadHomeBills();
+</script>
+</body>
+</html>
