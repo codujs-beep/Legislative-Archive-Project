@@ -598,36 +598,52 @@ let selectedField = '전체';
 let selectedStage = '전체';
 let currentKeyword = '';
 
-// 단계별로 API가 실제 반환하는 PROC_RESULT 값 (부분 일치 검색용)
-const STAGE_PROC_QUERIES = {
-  '1': ['위원회 회부', '소관위원회 회부'],
-  '2': ['위원회 심사', '소관위원회 심사', '체계자구심사', '체계·자구심사'],
-  '3': ['원안가결', '수정가결', '부결', '대안반영폐기', '임기만료폐기', '폐기'],
-  '4': ['정부이송'],
-  '5': ['공포'],
-};
+// 오래된 페이지(처리 완료 법안이 많은 구간)에서 특정 단계 법안을 수집
+async function fetchBillsByStageFromHistory(stageNum, baseParams) {
+  const FETCH_SIZE = 100;
+  const gridEl = document.getElementById('topics-bills-grid');
 
-// 특정 단계의 법안을 여러 PROC_RESULT 값으로 병렬 조회 후 합산
-async function fetchByProcResult(procQueries, baseParams) {
-  const results = await Promise.all(
-    procQueries.map(async (procVal) => {
+  // 1) 총 건수 파악
+  const firstData = await apiFetch({ ...baseParams, pIndex: 1, pSize: FETCH_SIZE });
+  const { total, rows: firstRows } = parseApiRows(firstData);
+  const totalPages = Math.ceil(total / FETCH_SIZE);
+
+  gridEl.innerHTML = `<div class="loading-wrap"><div class="spinner"></div>전체 ${total.toLocaleString()}건 중 처리된 법안 검색 중...</div>`;
+
+  // 2) 마지막 30페이지(오래된 법안) + 중간 10페이지를 대상으로 수집
+  const pagesToFetch = new Set();
+  for (let p = Math.max(2, totalPages - 29); p <= totalPages; p++) pagesToFetch.add(p);
+  const mid = Math.floor(totalPages / 2);
+  for (let p = Math.max(2, mid - 4); p <= mid + 5 && p < totalPages - 29; p++) pagesToFetch.add(p);
+
+  const pageArr = [...pagesToFetch].sort((a, b) => a - b);
+  const allRawRows = [...firstRows];
+
+  // 3) 5개씩 병렬 호출
+  const BATCH = 5;
+  for (let i = 0; i < pageArr.length; i += BATCH) {
+    const batch = pageArr.slice(i, i + BATCH);
+    const results = await Promise.all(batch.map(async p => {
       try {
-        const data = await apiFetch({ ...baseParams, pSize: 100, PROC_RESULT: procVal });
-        return parseApiRows(data);
-      } catch {
-        return { total: 0, rows: [] };
-      }
-    })
-  );
-  const seenIds = new Set();
-  const allRows = [];
-  for (const { rows } of results) {
-    for (const row of rows) {
-      const id = row.BILL_NO || row.BILL_NAME;
-      if (!seenIds.has(id)) { seenIds.add(id); allRows.push(row); }
-    }
+        const data = await apiFetch({ ...baseParams, pIndex: p, pSize: FETCH_SIZE });
+        return parseApiRows(data).rows;
+      } catch { return []; }
+    }));
+    for (const rows of results) allRawRows.push(...rows);
+    gridEl.innerHTML = `<div class="loading-wrap"><div class="spinner"></div>처리된 법안 검색 중... ${allRawRows.length.toLocaleString()}건 확인</div>`;
   }
-  return allRows;
+
+  // 4) 중복 제거 후 단계 필터
+  const seen = new Set();
+  const result = [];
+  for (const row of allRawRows) {
+    const id = row.BILL_NO || row.BILL_NAME;
+    if (seen.has(id)) continue;
+    seen.add(id);
+    const mapped = mapApiRow(row);
+    if ((mapped.stage ?? 0) === stageNum) result.push(mapped);
+  }
+  return result;
 }
 
 async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOverride = null } = {}) {
@@ -645,33 +661,26 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
       if (committee) baseParams.COMMITTEE = committee;
     }
 
-    let displayBills;
-    let total;
-
     if (selectedStage !== '전체' && selectedStage !== '0') {
-      // 단계 1-5: PROC_RESULT 값으로 병렬 쿼리
-      const rows = await fetchByProcResult(STAGE_PROC_QUERIES[selectedStage] || [], baseParams);
-      displayBills = rows.map(mapApiRow);
-      total = displayBills.length;
+      // 단계 1-5: 오래된 페이지에서 처리 완료 법안 수집 후 필터링
+      const stageNum = Number(selectedStage);
+      const displayBills = await fetchBillsByStageFromHistory(stageNum, baseParams);
       loadedBills = displayBills;
       apiLoaded = true;
-      document.getElementById('result-count').textContent = `${total.toLocaleString()}건`;
+      document.getElementById('result-count').textContent = `${displayBills.length.toLocaleString()}건`;
       renderBillsGrid('topics-bills-grid', displayBills);
       renderPagination(1, 1);
     } else {
       // 전체 또는 발의(0): 일반 페이지 조회
       const params = { pIndex: page, pSize: PAGE_SIZE, ...baseParams };
       const data = await apiFetch(params);
-      const parsed = parseApiRows(data);
-      total = parsed.total;
-      let rows = parsed.rows.map(mapApiRow);
-      // 발의 필터: procResult 없는 것만
-      if (selectedStage === '0') rows = rows.filter(b => (b.stage ?? 0) === 0);
-      loadedBills = rows;
+      const { total, rows } = parseApiRows(data);
+      let bills = rows.map(mapApiRow);
+      if (selectedStage === '0') bills = bills.filter(b => (b.stage ?? 0) === 0);
+      loadedBills = bills;
       apiLoaded = true;
-      displayBills = rows;
       document.getElementById('result-count').textContent = `총 ${total.toLocaleString()}건`;
-      renderBillsGrid('topics-bills-grid', displayBills);
+      renderBillsGrid('topics-bills-grid', bills);
       renderPagination(page, Math.ceil(total / PAGE_SIZE));
     }
   } catch (err) {
