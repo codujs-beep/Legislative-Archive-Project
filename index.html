@@ -1208,7 +1208,20 @@ const SAMPLE_BILLS = [
    초기화
 ════════════════════════════ */
 document.querySelector('.field-btn[data-field="전체"]').classList.add('selected');
-loadHomeBills();
+
+// pre-generated 요약 JSON을 먼저 캐시에 로드 (사용자 로딩 없이 즉시 표시)
+fetch('./data/card-summaries.json')
+  .then(r => r.ok ? r.json() : {})
+  .then(data => {
+    let added = 0;
+    for (const [key, summary] of Object.entries(data)) {
+      if (!summaryCache[key]) { summaryCache[key] = summary; added++; }
+    }
+    if (added) saveSummaryCache();
+  })
+  .catch(() => {})
+  .finally(() => loadHomeBills());
+
 </script>
 </body>
 </html>
