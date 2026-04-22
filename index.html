@@ -916,20 +916,17 @@ function navigate(page, e) {
    OpenAI API — 상세 자동 생성
 ════════════════════════════ */
 
-// 국회 법안 상세 페이지 본문을 CORS 프록시로 읽어옴
-async function fetchBillContent(bill) {
-  const url = bill.sourceUrl;
-  if (!url || url === 'https://likms.assembly.go.kr/bill/main.do') return null;
+// 국회 Open API에서 해당 법안의 전체 필드를 가져옴
+async function fetchBillApiData(bill) {
+  if (!bill.billNo) return null;
   try {
-    const proxyUrl = CORS_PROXY + encodeURIComponent(url);
-    const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(12000) });
-    if (!res.ok) return null;
-    const html = await res.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    doc.querySelectorAll('script, style, nav, header, footer, .btn, .tab').forEach(el => el.remove());
-    const text = (doc.body?.textContent || '').replace(/\s+/g, ' ').trim();
-    return text.slice(0, 5000) || null;
+    const data = await apiFetch({ pIndex: 1, pSize: 1, BILL_NO: bill.billNo });
+    const { rows } = parseApiRows(data);
+    if (!rows.length) return null;
+    return Object.entries(rows[0])
+      .filter(([, v]) => v && typeof v === 'string' && v.trim())
+      .map(([k, v]) => `${k}: ${v}`)
+      .join('\n');
   } catch { return null; }
 }
 
@@ -938,12 +935,10 @@ async function generateBillDetails(bill) {
   if (billDetailsCache[cacheKey]) return billDetailsCache[cacheKey];
   if (!OPENAI_API_KEY) return null;
 
-  // 국회 API에서 법안 본문 읽기 시도
-  const billContent = await fetchBillContent(bill);
-
-  const contextBlock = billContent
-    ? `[국회 의안정보시스템에서 가져온 법안 본문]\n${billContent}`
-    : `소관위원회: ${bill.committee || '미상'}\n처리상태: ${bill.procResult || '발의'}\n발의일: ${bill.date || ''}`;
+  const apiData = await fetchBillApiData(bill);
+  const contextBlock = apiData
+    ? `[국회 Open API 법안 데이터]\n${apiData}`
+    : `소관위원회: ${bill.committee || '미상'}\n처리상태: ${bill.procResult || '심사 중'}\n발의일: ${bill.date || ''}`;
 
   const prompt = `다음 한국 국회 법안의 상세 정보를 JSON으로 작성해주세요.
 
@@ -952,12 +947,14 @@ ${contextBlock}
 
 작성 지침:
 - 고등학생도 이해할 수 있는 쉬운 표현 사용
-- keyPoints는 법안 본문의 핵심 조항을 그대로 인용하거나 최대한 가깝게 옮길 것
-  * 조항 원문이 있으면 그대로 쓰고, 일반인이 이해하기 어려운 법률 용어가 있으면 바로 뒤에 괄호로 쉬운 말 풀이를 붙일 것
-    예) "제7조: 아동·청소년 대상 성범죄자의 취업제한 기간을 10년에서 20년으로 연장 (성범죄자가 학교·학원 등에서 일하지 못하는 기간이 두 배로 늘어남)"
-  * 본문을 가져올 수 없는 경우에도 수치·대상·조건을 구체적으로 명시할 것
-  * 뭉뚱그린 표현 금지: "처벌 강화", "지원 확대" → 무엇이 얼마나 어떻게 바뀌는지
+- keyPoints는 이 법안이 실제로 바꾸는 조항들을 구체적으로 서술할 것
+  * GPT가 이 법안에 대해 알고 있는 실제 조항 내용을 최대한 정확하게 쓸 것
+  * 법률 용어가 어려우면 바로 뒤 괄호 안에 쉬운 말로 풀이를 붙일 것
+    예) "제7조: 성범죄자 취업제한 기간 10년 → 20년으로 연장 (학교·학원 등 아동 관련 기관에서 일하지 못하는 기간이 두 배로 늘어남)"
+  * 수치·금액·기간·대상이 있으면 반드시 포함
+  * "강화됨", "확대됨" 같은 뭉뚱그린 표현 금지 — 구체적으로 무엇이 얼마나 바뀌는지
   * 핵심 조항 3~5개를 각각 분리해서 쓸 것
+  * 모르는 내용은 지어내지 말고, 알고 있는 것만 쓸 것
 
 아래 JSON 형식으로만 응답하세요:
 {
