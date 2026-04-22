@@ -554,15 +554,15 @@ async function apiFetch(params) {
 
 function parseApiRows(data) {
   const sections = data[BILL_LIST_EP];
-  if (!Array.isArray(sections)) throw new Error('응답 형식 오류');
+  // API가 에러/데이터없음 응답을 다른 형식으로 반환할 때 예외 대신 빈 결과 반환
+  if (!Array.isArray(sections)) return { total: 0, rows: [] };
   const headSection = sections.find(s => s.head);
   const rowSection = sections.find(s => s.row);
   const total = headSection?.head?.[0]?.list_total_count ?? 0;
   const rows = rowSection?.row ?? [];
 
-  // 에러 코드 확인
   const resultCode = headSection?.head?.[1]?.RESULT?.CODE || '';
-  if (resultCode && !resultCode.startsWith('INFO')) throw new Error(headSection.head[1].RESULT.MESSAGE);
+  if (resultCode && !resultCode.startsWith('INFO')) return { total: 0, rows: [] };
 
   return { total, rows };
 }
@@ -598,6 +598,38 @@ let selectedField = '전체';
 let selectedStage = '전체';
 let currentKeyword = '';
 
+// 단계별로 API가 실제 반환하는 PROC_RESULT 값 (부분 일치 검색용)
+const STAGE_PROC_QUERIES = {
+  '1': ['위원회 회부', '소관위원회 회부'],
+  '2': ['위원회 심사', '소관위원회 심사', '체계자구심사', '체계·자구심사'],
+  '3': ['원안가결', '수정가결', '부결', '대안반영폐기', '임기만료폐기', '폐기'],
+  '4': ['정부이송'],
+  '5': ['공포'],
+};
+
+// 특정 단계의 법안을 여러 PROC_RESULT 값으로 병렬 조회 후 합산
+async function fetchByProcResult(procQueries, baseParams) {
+  const results = await Promise.all(
+    procQueries.map(async (procVal) => {
+      try {
+        const data = await apiFetch({ ...baseParams, pSize: 100, PROC_RESULT: procVal });
+        return parseApiRows(data);
+      } catch {
+        return { total: 0, rows: [] };
+      }
+    })
+  );
+  const seenIds = new Set();
+  const allRows = [];
+  for (const { rows } of results) {
+    for (const row of rows) {
+      const id = row.BILL_NO || row.BILL_NAME;
+      if (!seenIds.has(id)) { seenIds.add(id); allRows.push(row); }
+    }
+  }
+  return allRows;
+}
+
 async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOverride = null } = {}) {
   if (fieldOverride !== null) selectedField = fieldOverride;
   if (stageOverride !== null) selectedStage = stageOverride;
@@ -606,34 +638,42 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
 
   showGridLoading('topics-bills-grid');
   try {
-    // 단계 필터 시 더 많은 데이터를 가져와 클라이언트 필터링
-    const fetchSize = selectedStage !== '전체' ? 100 : PAGE_SIZE;
-    const params = { pIndex: page, pSize: fetchSize };
-    if (keyword) params.BILL_NAME = keyword;
-
+    const baseParams = {};
+    if (keyword) baseParams.BILL_NAME = keyword;
     if (selectedField !== '전체') {
       const committee = Object.entries(COMMITTEE_FIELD).find(([, v]) => v === selectedField)?.[0] || '';
-      if (committee) params.COMMITTEE = committee;
+      if (committee) baseParams.COMMITTEE = committee;
     }
 
-    const data = await apiFetch(params);
-    const { total, rows } = parseApiRows(data);
-    totalCount = total;
-    loadedBills = rows.map(mapApiRow);
-    apiLoaded = true;
+    let displayBills;
+    let total;
 
-    // 단계 클라이언트 필터링
-    let displayBills = loadedBills;
-    if (selectedStage !== '전체') {
-      displayBills = loadedBills.filter(b => (b.stage ?? 0) === Number(selectedStage));
+    if (selectedStage !== '전체' && selectedStage !== '0') {
+      // 단계 1-5: PROC_RESULT 값으로 병렬 쿼리
+      const rows = await fetchByProcResult(STAGE_PROC_QUERIES[selectedStage] || [], baseParams);
+      displayBills = rows.map(mapApiRow);
+      total = displayBills.length;
+      loadedBills = displayBills;
+      apiLoaded = true;
+      document.getElementById('result-count').textContent = `${total.toLocaleString()}건`;
+      renderBillsGrid('topics-bills-grid', displayBills);
+      renderPagination(1, 1);
+    } else {
+      // 전체 또는 발의(0): 일반 페이지 조회
+      const params = { pIndex: page, pSize: PAGE_SIZE, ...baseParams };
+      const data = await apiFetch(params);
+      const parsed = parseApiRows(data);
+      total = parsed.total;
+      let rows = parsed.rows.map(mapApiRow);
+      // 발의 필터: procResult 없는 것만
+      if (selectedStage === '0') rows = rows.filter(b => (b.stage ?? 0) === 0);
+      loadedBills = rows;
+      apiLoaded = true;
+      displayBills = rows;
+      document.getElementById('result-count').textContent = `총 ${total.toLocaleString()}건`;
+      renderBillsGrid('topics-bills-grid', displayBills);
+      renderPagination(page, Math.ceil(total / PAGE_SIZE));
     }
-
-    document.getElementById('result-count').textContent =
-      selectedStage !== '전체'
-        ? `${displayBills.length}건 (전체 ${total.toLocaleString()}건 중)`
-        : `총 ${total.toLocaleString()}건`;
-    renderBillsGrid('topics-bills-grid', displayBills);
-    renderPagination(page, Math.ceil(total / fetchSize));
   } catch (err) {
     console.error(err);
     apiLoaded = false;
