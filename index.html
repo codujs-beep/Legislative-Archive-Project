@@ -483,8 +483,15 @@ let totalCount = 0;
 let apiLoaded = false;
 
 let loadedBills = [];
-const billDetailsCache = {};
-const summaryCache = {};
+
+// localStorage에서 캐시 복원 (새로고침해도 유지)
+const LS_SUMMARY = 'albeop_summary_v1';
+const LS_DETAILS = 'albeop_details_v1';
+const summaryCache    = JSON.parse(localStorage.getItem(LS_SUMMARY) || '{}');
+const billDetailsCache = JSON.parse(localStorage.getItem(LS_DETAILS) || '{}');
+
+function saveSummaryCache()  { try { localStorage.setItem(LS_SUMMARY, JSON.stringify(summaryCache));  } catch {} }
+function saveDetailsCache()  { try { localStorage.setItem(LS_DETAILS, JSON.stringify(billDetailsCache)); } catch {} }
 
 /* ════════════════════════════
    위원회 → 분야 매핑
@@ -812,6 +819,7 @@ JSON으로만 응답: {"summaries": ["1번", "2번", ...]}` }],
       if (!batch[i]) return;
       const key = batch[i].billNo || batch[i].title;
       summaryCache[key] = summary;
+      saveSummaryCache();
       const idx = loadedBills.indexOf(batch[i]);
       document.querySelectorAll(`.bill-friendly[data-idx="${idx}"]`).forEach(el => {
         el.textContent = summary;
@@ -990,6 +998,7 @@ ${contextBlock}
   const text = data.choices?.[0]?.message?.content || '';
   const result = JSON.parse(text);
   billDetailsCache[cacheKey] = result;
+  saveDetailsCache();
   return result;
 }
 
