@@ -83,6 +83,8 @@
     .bill-card .tag { font-size: 11px; color: #888; margin-bottom: 6px; }
     .bill-card .bill-title { font-size: 14px; font-weight: bold; line-height: 1.4; }
     .bill-card .bill-desc { font-size: 12px; color: #666; margin-top: 8px; line-height: 1.5; }
+    .bill-card .bill-summary { font-size: 12px; color: #444; margin-top: 6px; line-height: 1.45; }
+    .bill-card .bill-summary.loading { color: #ccc; }
     .bill-card .bill-meta { font-size: 11px; color: #aaa; margin-top: 10px; }
     .bill-card .proc-badge {
       display: inline-block; margin-top: 8px;
@@ -479,6 +481,7 @@ let apiLoaded = false;
 
 let loadedBills = [];
 const billDetailsCache = {};
+const summaryCache = {};
 
 /* ════════════════════════════
    위원회 → 분야 매핑
@@ -684,17 +687,60 @@ function renderBillsGrid(gridId, bills) {
     return;
   }
   grid.innerHTML = bills.map((b, i) => billCardHTML(b, i)).join('');
+  if (gridId === 'topics-bills-grid') generateCardSummaries(bills);
+}
+
+async function generateCardSummaries(bills) {
+  const needed = bills.filter(b => b.fromApi && !summaryCache[b.billNo || b.title]);
+  if (!needed.length) return;
+
+  const batch = needed.slice(0, 30);
+  const list = batch.map((b, i) => `${i + 1}. ${b.title}`).join('\n');
+
+  try {
+    const res = await fetch('https://old-recipe-2a66.codujs.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        max_tokens: 2048,
+        response_format: { type: 'json_object' },
+        messages: [{ role: 'user', content:
+          `다음 한국 국회 법안들 각각에 대해, 일반 시민이 바로 이해할 수 있는 한 줄 요약을 30자 내외로 작성해주세요. "~됩니다", "~강화됩니다", "~받을 수 있습니다" 같은 쉬운 말로 쓰세요.\n\n${list}\n\nJSON으로만 응답: {"summaries": ["1번요약", "2번요약", ...]}` }],
+      }),
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const result = JSON.parse(data.choices?.[0]?.message?.content || '{}');
+    (result.summaries || []).forEach((summary, i) => {
+      if (!batch[i]) return;
+      const key = batch[i].billNo || batch[i].title;
+      summaryCache[key] = summary;
+      const idx = loadedBills.indexOf(batch[i]);
+      document.querySelectorAll(`.bill-summary[data-idx="${idx}"]`).forEach(el => {
+        el.textContent = summary;
+        el.classList.remove('loading');
+      });
+    });
+  } catch (e) {
+    console.error('카드 요약 생성 실패:', e);
+  }
 }
 
 function billCardHTML(b, localIdx) {
   const globalIdx = loadedBills.indexOf(b) !== -1 ? loadedBills.indexOf(b) : localIdx;
   const isEnacted = b.stage >= 5;
   const procLabel = b.procResult || (b.stage < 1 ? '발의' : TL_STEPS[b.stage] || '');
+  const key = b.billNo || b.title;
+  const cached = summaryCache[key] || (!b.fromApi && b.desc ? b.desc : '');
+  const summaryHTML = cached
+    ? `<div class="bill-summary" data-idx="${globalIdx}">${cached}</div>`
+    : `<div class="bill-summary loading" data-idx="${globalIdx}">분석 중...</div>`;
   return `
     <div class="bill-card" onclick="openBill(${globalIdx})">
       <div class="tag">${b.field}</div>
       <div class="bill-title">${b.title}</div>
-      ${b.desc ? `<div class="bill-desc">${b.desc}</div>` : ''}
+      ${summaryHTML}
       <div class="bill-meta">${(b.date || '').replace(/-/g,'.')} 발의</div>
       ${procLabel ? `<span class="proc-badge${isEnacted ? ' enacted' : ''}">${procLabel}</span>` : ''}
     </div>`;
