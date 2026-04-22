@@ -795,10 +795,9 @@ ${contextBlock}
   ]
 }`;
 
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+  const res = await fetch('https://old-recipe-2a66.codujs.workers.dev', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${OPENAI_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
