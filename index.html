@@ -362,6 +362,18 @@
               <option value="제주">제주</option>
             </select>
           </div>
+          <div>
+            <div class="filter-label">현황별</div>
+            <select id="stage-select" class="filter-select" onchange="applyLocalFilters()">
+              <option value="전체">전체</option>
+              <option value="0">발의</option>
+              <option value="1">회부</option>
+              <option value="2">심사</option>
+              <option value="3">의결</option>
+              <option value="4">이송</option>
+              <option value="5">공포</option>
+            </select>
+          </div>
         </div>
       </div>
       <hr class="filter-divider" />
@@ -635,13 +647,15 @@ async function loadHomeBills() {
 function applyLocalFilters() {
   const job = document.getElementById('job-select').value;
   const region = document.getElementById('region-select').value;
+  const stage = document.getElementById('stage-select').value;
   const sort = document.getElementById('sort-select').value;
 
   let results = loadedBills.filter(b => {
     const fieldMatch = selectedField === '전체' || b.field === selectedField;
     const jobMatch = job === '전체' || (b.jobs || []).includes('전체') || (b.jobs || []).includes(job);
     const regionMatch = region === '전체' || (b.regions || []).includes('전체') || (b.regions || []).includes(region);
-    return fieldMatch && jobMatch && regionMatch;
+    const stageMatch = stage === '전체' || (b.stage ?? 0) === Number(stage);
+    return fieldMatch && jobMatch && regionMatch && stageMatch;
   });
 
   if (sort === 'recent') results.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
