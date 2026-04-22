@@ -91,7 +91,10 @@
       font-size: 10px; padding: 2px 7px; border-radius: 10px;
       background: #f0f0f0; color: #555;
     }
-    .bill-card .proc-badge.enacted { background: #d1fae5; color: #065f46; }
+    .bill-card .proc-badge.enacted  { background: #d1fae5; color: #065f46; }
+    .bill-card .proc-badge.rejected { background: #fee2e2; color: #991b1b; }
+    .bill-card .proc-badge.discarded{ background: #fef3c7; color: #92400e; }
+    .bill-card .proc-badge.ongoing  { background: #eff6ff; color: #1d4ed8; }
 
     /* ── 주제별 법안 ── */
     #page-topics { padding: 32px; gap: 0; }
@@ -365,15 +368,15 @@
             </select>
           </div>
           <div>
-            <div class="filter-label">현황별</div>
+            <div class="filter-label">처리결과별</div>
             <select id="stage-select" class="filter-select" onchange="selectStage(this.value)">
               <option value="전체">전체</option>
-              <option value="0">발의</option>
-              <option value="1">회부</option>
-              <option value="2">심사</option>
-              <option value="3">의결</option>
-              <option value="4">이송</option>
-              <option value="5">공포</option>
+              <option value="진행중">심사 중</option>
+              <option value="원안가결">원안가결</option>
+              <option value="수정가결">수정가결</option>
+              <option value="부결">부결</option>
+              <option value="폐기">폐기</option>
+              <option value="철회">철회</option>
             </select>
           </div>
         </div>
@@ -512,19 +515,21 @@ function committeeToField(committee) {
   return '기타';
 }
 
-/* ════════════════════════════
-   처리결과 → 타임라인 단계
-════════════════════════════ */
-function procResultToStage(proc) {
-  if (!proc) return 0;
-  const p = proc.trim();
-  if (p.includes('공포') || p.includes('시행')) return 5;
-  if (p.includes('정부이송') || p.includes('이송')) return 4;
-  if (p.includes('본회의') || p.includes('가결') || p.includes('부결') || p.includes('수정가결')) return 3;
-  if (p.includes('체계') || p.includes('자구') || p.includes('법사위')) return 2;
-  if (p.includes('위원회') || p.includes('심사') || p.includes('소관위')) return 2;
-  if (p.includes('회부') || p.includes('접수')) return 1;
-  return 0;
+// procResult 값 → 배지 스타일 클래스
+function procBadgeCls(procResult) {
+  if (!procResult) return 'ongoing';
+  if (procResult === '원안가결' || procResult === '수정가결') return 'enacted';
+  if (procResult.includes('부결')) return 'rejected';
+  if (procResult.includes('폐기')) return 'discarded';
+  return '';
+}
+
+// 필터 선택값 vs 실제 procResult 매칭
+function matchesProcFilter(procResult, filter) {
+  if (filter === '전체') return true;
+  if (filter === '진행중') return !procResult;
+  if (filter === '폐기') return (procResult || '').includes('폐기');
+  return procResult === filter;
 }
 
 /* ════════════════════════════
@@ -567,10 +572,19 @@ function parseApiRows(data) {
   return { total, rows };
 }
 
+function procResultToStage(proc) {
+  if (!proc) return 0;
+  const p = proc.trim();
+  if (p.includes('공포') || p.includes('시행')) return 5;
+  if (p.includes('이송')) return 4;
+  if (p.includes('가결') || p.includes('부결') || p.includes('폐기') || p.includes('철회')) return 3;
+  return 0;
+}
+
 function mapApiRow(row) {
   const field = committeeToField(row.COMMITTEE || '');
-  const stage = procResultToStage(row.PROC_RESULT || '');
   const date = (row.PROPOSE_DT || row.SUBMIT_DT || '').replace(/\./g, '-');
+  const procResult = row.PROC_RESULT || '';
   return {
     field,
     title: row.BILL_NAME || '',
@@ -578,8 +592,8 @@ function mapApiRow(row) {
     proposer: row.PROPOSER || '',
     committee: row.COMMITTEE || '',
     date,
-    procResult: row.PROC_RESULT || '',
-    stage,
+    procResult,
+    stage: procResultToStage(procResult),
     stageDates: Array(6).fill(''),
     desc: '', // API에서 미제공 → 상세 페이지에서 안내
     jobs: ['전체'],
@@ -598,15 +612,12 @@ let selectedField = '전체';
 let selectedStage = '전체';
 let currentKeyword = '';
 
-// 단계별 특성에 맞는 페이지 구간을 선택해 법안 수집
-// 심사·회부·이송 = 현재 진행 중 → 최신 페이지
-// 의결·공포       = 처리 완료    → 오래된 페이지
-// 두 방향 모두 + 중간 샘플 포함
-async function fetchBillsByStageFromHistory(stageNum, baseParams) {
+// PROC_RESULT 기준으로 법안 수집
+// 진행중(null): 최신 페이지 / 처리완료: 오래된 페이지 + 중간
+async function fetchBillsByProcResult(filterVal, baseParams) {
   const FETCH_SIZE = 100;
   const gridEl = document.getElementById('topics-bills-grid');
 
-  // 1) 총 건수 파악
   const firstData = await apiFetch({ ...baseParams, pIndex: 1, pSize: FETCH_SIZE });
   const { total, rows: firstRows } = parseApiRows(firstData);
   const totalPages = Math.ceil(total / FETCH_SIZE);
@@ -614,27 +625,19 @@ async function fetchBillsByStageFromHistory(stageNum, baseParams) {
   gridEl.innerHTML = `<div class="loading-wrap"><div class="spinner"></div>전체 ${total.toLocaleString()}건 중 검색 중...</div>`;
 
   const pages = new Set();
-
-  // 최신 구간 (회부·심사·이송: 진행 중인 법안)
-  if ([1, 2, 4].includes(stageNum)) {
+  if (filterVal === '진행중') {
+    // 진행 중인 법안(PROC_RESULT=null)은 최신 페이지에 집중
     for (let p = 2; p <= Math.min(40, totalPages); p++) pages.add(p);
-  }
-  // 오래된 구간 (의결·공포: 처리 완료된 법안)
-  if ([3, 5].includes(stageNum)) {
-    for (let p = Math.max(2, totalPages - 49); p <= totalPages; p++) pages.add(p);
-  }
-  // 모든 단계에 중간 샘플 추가 (커버리지 보완)
-  const mid = Math.floor(totalPages / 2);
-  for (let p = Math.max(2, mid - 9); p <= mid + 10 && p <= totalPages; p++) pages.add(p);
-  // 이송·공포는 최신도 확인 (방금 통과된 것 포함)
-  if ([4, 5].includes(stageNum)) {
-    for (let p = 2; p <= Math.min(20, totalPages); p++) pages.add(p);
+  } else {
+    // 처리 완료 법안은 오래된 페이지에 집중 + 중간 샘플
+    for (let p = Math.max(2, totalPages - 59); p <= totalPages; p++) pages.add(p);
+    const mid = Math.floor(totalPages / 2);
+    for (let p = Math.max(2, mid - 9); p <= mid + 10 && p <= totalPages; p++) pages.add(p);
   }
 
   const pageArr = [...pages].sort((a, b) => a - b);
   const allRawRows = [...firstRows];
 
-  // 2) 5개씩 병렬 호출
   const BATCH = 5;
   for (let i = 0; i < pageArr.length; i += BATCH) {
     const batch = pageArr.slice(i, i + BATCH);
@@ -648,7 +651,6 @@ async function fetchBillsByStageFromHistory(stageNum, baseParams) {
     gridEl.innerHTML = `<div class="loading-wrap"><div class="spinner"></div>검색 중... ${allRawRows.length.toLocaleString()}건 확인</div>`;
   }
 
-  // 3) 중복 제거 후 단계 필터
   const seen = new Set();
   const result = [];
   for (const row of allRawRows) {
@@ -656,7 +658,7 @@ async function fetchBillsByStageFromHistory(stageNum, baseParams) {
     if (seen.has(id)) continue;
     seen.add(id);
     const mapped = mapApiRow(row);
-    if ((mapped.stage ?? 0) === stageNum) result.push(mapped);
+    if (matchesProcFilter(mapped.procResult, filterVal)) result.push(mapped);
   }
   return result;
 }
@@ -676,26 +678,23 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
       if (committee) baseParams.COMMITTEE = committee;
     }
 
-    if (selectedStage !== '전체' && selectedStage !== '0') {
-      // 단계 1-5: 오래된 페이지에서 처리 완료 법안 수집 후 필터링
-      const stageNum = Number(selectedStage);
-      const displayBills = await fetchBillsByStageFromHistory(stageNum, baseParams);
+    if (selectedStage !== '전체') {
+      // 특정 처리결과 필터: 전략적 페이지 샘플링 후 클라이언트 필터
+      const displayBills = await fetchBillsByProcResult(selectedStage, baseParams);
       loadedBills = displayBills;
       apiLoaded = true;
       document.getElementById('result-count').textContent = `${displayBills.length.toLocaleString()}건`;
       renderBillsGrid('topics-bills-grid', displayBills);
       renderPagination(1, 1);
     } else {
-      // 전체 또는 발의(0): 일반 페이지 조회
+      // 전체: 일반 페이지 조회
       const params = { pIndex: page, pSize: PAGE_SIZE, ...baseParams };
       const data = await apiFetch(params);
       const { total, rows } = parseApiRows(data);
-      let bills = rows.map(mapApiRow);
-      if (selectedStage === '0') bills = bills.filter(b => (b.stage ?? 0) === 0);
-      loadedBills = bills;
+      loadedBills = rows.map(mapApiRow);
       apiLoaded = true;
       document.getElementById('result-count').textContent = `총 ${total.toLocaleString()}건`;
-      renderBillsGrid('topics-bills-grid', bills);
+      renderBillsGrid('topics-bills-grid', loadedBills);
       renderPagination(page, Math.ceil(total / PAGE_SIZE));
     }
   } catch (err) {
@@ -734,7 +733,7 @@ function applyLocalFilters() {
     const fieldMatch = selectedField === '전체' || b.field === selectedField;
     const jobMatch = job === '전체' || (b.jobs || []).includes('전체') || (b.jobs || []).includes(job);
     const regionMatch = region === '전체' || (b.regions || []).includes('전체') || (b.regions || []).includes(region);
-    const stageMatch = stage === '전체' || (b.stage ?? 0) === Number(stage);
+    const stageMatch = matchesProcFilter(b.procResult, stage);
     return fieldMatch && jobMatch && regionMatch && stageMatch;
   });
 
@@ -806,8 +805,8 @@ async function generateCardSummaries(bills) {
 
 function billCardHTML(b, localIdx) {
   const globalIdx = loadedBills.indexOf(b) !== -1 ? loadedBills.indexOf(b) : localIdx;
-  const isEnacted = b.stage >= 5;
-  const procLabel = b.procResult || (b.stage < 1 ? '발의' : TL_STEPS[b.stage] || '');
+  const badgeCls = procBadgeCls(b.procResult);
+  const procLabel = b.procResult || '심사 중';
   const key = b.billNo || b.title;
   const cached = summaryCache[key] || (!b.fromApi && b.desc ? b.desc : '');
   const friendlyHTML = cached
@@ -819,7 +818,7 @@ function billCardHTML(b, localIdx) {
       ${friendlyHTML}
       <div class="bill-title">${b.title}</div>
       <div class="bill-meta">${(b.date || '').replace(/-/g,'.')} 발의</div>
-      ${procLabel ? `<span class="proc-badge${isEnacted ? ' enacted' : ''}">${procLabel}</span>` : ''}
+      <span class="proc-badge ${badgeCls}">${procLabel}</span>
     </div>`;
 }
 
