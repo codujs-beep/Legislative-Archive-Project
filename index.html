@@ -934,11 +934,15 @@ function renderPagination(current, totalPages) {
   const windowEnd = Math.min(totalPages, windowStart + PAGE_WINDOW_SIZE - 1);
   const maxWindow = Math.ceil(totalPages / PAGE_WINDOW_SIZE) - 1;
 
-  let html = `<button class="page-btn" onclick="shiftPageWindow(-1)" ${currentPageWindow === 0 ? 'disabled' : ''}>←</button>`;
+  let html = currentPageWindow > 0
+    ? `<button class="page-btn" onclick="shiftPageWindow(-1)">←</button>`
+    : `<span style="width:38px"></span>`;
   for (let p = windowStart; p <= windowEnd; p++) {
     html += `<button class="page-btn${p === current ? ' active' : ''}" onclick="goPage(${p})">${p}</button>`;
   }
-  html += `<button class="page-btn" onclick="shiftPageWindow(1)" ${currentPageWindow >= maxWindow ? 'disabled' : ''}>→</button>`;
+  html += currentPageWindow < maxWindow
+    ? `<button class="page-btn" onclick="shiftPageWindow(1)">→</button>`
+    : `<span style="width:38px"></span>`;
   if (totalPages > PAGE_WINDOW_SIZE) {
     html += `<span class="page-ellipsis">/ ${totalPages}p</span>`;
   }
