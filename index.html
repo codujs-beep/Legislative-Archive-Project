@@ -70,6 +70,16 @@
     #featured { padding: 0 32px 40px; }
     #featured-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
     #featured-header h2 { font-size: 20px; font-weight: bold; }
+
+    /* 홈 스포트라이트 카드 */
+    .spotlight-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .spotlight-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; cursor: pointer; background: #fff; transition: background 0.15s; }
+    .spotlight-card:hover { background: #f9fafb; border-color: #d1d5db; }
+    .spotlight-badge { display: inline-block; font-size: 11px; font-weight: 600; border-radius: 4px; padding: 3px 8px; margin-bottom: 10px; white-space: nowrap; }
+    .spotlight-badge.urgent  { background: #fee2e2; color: #b91c1c; }
+    .spotlight-badge.revived { background: #ede9fe; color: #6d28d9; }
+    .spotlight-badge.daily   { background: #dbeafe; color: #1d4ed8; }
+    .spotlight-summary { font-size: 15px; font-weight: 700; color: #111; line-height: 1.45; }
     #view-all-btn {
       padding: 6px 14px; font-size: 13px; cursor: pointer;
       border: 1px solid #aaa; border-radius: 4px; background: #fff;
@@ -758,15 +768,61 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
   }
 }
 
+let spotlightBills = [];
+
 async function loadHomeBills() {
   showGridLoading('home-bills-grid');
   try {
-    const data = await apiFetch({ pIndex: 1, pSize: 6 });
-    const { rows } = parseApiRows(data);
-    renderBillsGrid('home-bills-grid', rows.map(mapApiRow));
-  } catch {
-    renderBillsGrid('home-bills-grid', SAMPLE_BILLS.slice(0, 6));
+    const res = await fetch('./data/home-spotlight.json');
+    const data = res.ok ? await res.json() : null;
+    if (data?.items?.length) {
+      spotlightBills = data.items;
+      renderSpotlightGrid(spotlightBills);
+      return;
+    }
+  } catch {}
+  document.getElementById('home-bills-grid').innerHTML =
+    '<div class="no-results" style="color:#aaa">매일 자동 업데이트됩니다. 잠시 후 다시 확인해주세요.</div>';
+}
+
+function spotlightBadgeCls(category) {
+  if (category === '표결까지 D-7 이내') return 'urgent';
+  if (category === '장기 계류 후 재심사 시작') return 'revived';
+  return 'daily';
+}
+
+function renderSpotlightGrid(items) {
+  const grid = document.getElementById('home-bills-grid');
+  if (!items?.length) {
+    grid.innerHTML = '<div class="no-results">주목할 법안이 없습니다.</div>';
+    return;
   }
+  grid.className = 'spotlight-grid';
+  grid.innerHTML = items.map((b, i) => `
+    <div class="spotlight-card" onclick="openSpotlightBill(${i})">
+      <span class="spotlight-badge ${spotlightBadgeCls(b.category)}">${b.category}</span>
+      <div class="spotlight-summary">${b.summary}</div>
+    </div>`).join('');
+}
+
+function openSpotlightBill(idx) {
+  const s = spotlightBills[idx];
+  if (!s) return;
+  const b = {
+    ...s,
+    fromApi:    true,
+    field:      committeeToField(s.committee || '', s.title || ''),
+    jobs:       ['전체'],
+    regions:    ['전체'],
+    stage:      procResultToStage(s.procResult || ''),
+    stageDates: Array(6).fill(''),
+    impact:     [],
+    keyPoints:  [],
+    desc:       s.summary,
+    sourceUrl:  s.sourceUrl || 'https://likms.assembly.go.kr/bill/main.do',
+  };
+  loadedBills = [b];
+  openBill(0);
 }
 
 /* ════════════════════════════
