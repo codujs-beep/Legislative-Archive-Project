@@ -921,14 +921,15 @@ function billCardHTML(b, localIdx) {
     </div>`;
 }
 
-function renderPagination(current, totalPages) {
+function renderPagination(current, totalPages, autoAdjust = true) {
   lastTotalPages = totalPages;
   const el = document.getElementById('pagination');
   if (totalPages <= 1) { el.innerHTML = ''; return; }
 
-  // 현재 페이지가 속한 윈도우로 자동 맞춤
-  const pageWindow = Math.floor((current - 1) / PAGE_WINDOW_SIZE);
-  if (currentPageWindow !== pageWindow) currentPageWindow = pageWindow;
+  // 페이지 이동 시에만 윈도우 자동 맞춤 (shiftPageWindow 호출 시엔 건드리지 않음)
+  if (autoAdjust) {
+    currentPageWindow = Math.floor((current - 1) / PAGE_WINDOW_SIZE);
+  }
 
   const windowStart = currentPageWindow * PAGE_WINDOW_SIZE + 1;
   const windowEnd = Math.min(totalPages, windowStart + PAGE_WINDOW_SIZE - 1);
@@ -952,7 +953,7 @@ function renderPagination(current, totalPages) {
 function shiftPageWindow(dir) {
   const maxWindow = Math.ceil(lastTotalPages / PAGE_WINDOW_SIZE) - 1;
   currentPageWindow = Math.max(0, Math.min(currentPageWindow + dir, maxWindow));
-  renderPagination(currentPage, lastTotalPages);
+  renderPagination(currentPage, lastTotalPages, false); // 윈도우 위치 유지
 }
 
 function goPage(p) {
