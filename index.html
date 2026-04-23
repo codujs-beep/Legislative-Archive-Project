@@ -496,26 +496,56 @@ function saveDetailsCache()  { try { localStorage.setItem(LS_DETAILS, JSON.strin
 /* ════════════════════════════
    위원회 → 분야 매핑
 ════════════════════════════ */
+// 위원회 → 기본 분야 (키워드 미매칭 시 fallback)
 const COMMITTEE_FIELD = {
-  '환경노동위원회': '노동/고용',
-  '기획재정위원회': '세금/재정',
-  '국토교통위원회': '교통/인프라',
-  '교육위원회': '교육',
-  '보건복지위원회': '의료/보건',
-  '여성가족위원회': '육아/가족',
-  '과학기술정보방송통신위원회': '디지털/AI',
-  '법제사법위원회': '사법/인권',
-  '농림축산식품해양수산위원회': '농어업',
-  '외교통일위원회': '안보/외교',
-  '국방위원회': '안보/외교',
-  '행정안전위원회': '디지털/AI',
-  '산업통상자원중소벤처기업위원회': '세금/재정',
-  '정무위원회': '세금/재정',
-  '문화체육관광위원회': '교육',
-  '국회운영위원회': '사법/인권',
+  '환경노동위원회':                    '노동/고용',
+  '기획재정위원회':                    '세금/재정',
+  '국토교통위원회':                    '교통/인프라',
+  '교육위원회':                        '교육',
+  '보건복지위원회':                    '의료/보건',
+  '여성가족위원회':                    '육아/가족',
+  '과학기술정보방송통신위원회':         '디지털/AI',
+  '법제사법위원회':                    '사법/인권',
+  '농림축산식품해양수산위원회':         '농어업',
+  '외교통일위원회':                    '안보/외교',
+  '국방위원회':                        '안보/외교',
+  '행정안전위원회':                    '디지털/AI',
+  '산업통상자원중소벤처기업위원회':     '세금/재정',
+  '정무위원회':                        '세금/재정',
+  '문화체육관광위원회':                '교육',
+  '국회운영위원회':                    '사법/인권',
 };
 
-function committeeToField(committee) {
+// 분야 → API에 보낼 위원회 (한 위원회가 여러 분야 담당 시 공유)
+const FIELD_TO_API_COMMITTEE = {
+  '노동/고용':   '환경노동위원회',
+  '환경':        '환경노동위원회',
+  '부동산':      '국토교통위원회',
+  '교통/인프라': '국토교통위원회',
+  '세금/재정':   '기획재정위원회',
+  '교육':        '교육위원회',
+  '의료/보건':   '보건복지위원회',
+  '육아/가족':   '여성가족위원회',
+  '디지털/AI':   '과학기술정보방송통신위원회',
+  '농어업':      '농림축산식품해양수산위원회',
+  '사법/인권':   '법제사법위원회',
+  '안보/외교':   '외교통일위원회',
+};
+
+// 제목 키워드로 분야를 더 정확히 구분 (공유 위원회 처리)
+const FIELD_KEYWORDS = {
+  '부동산':      ['부동산', '주택', '임대', '아파트', '청약', '전세', '분양', '재개발', '재건축', '도시정비', '토지', '주거'],
+  '환경':        ['환경', '기후', '탄소', '에너지', '녹색', '온실', '대기', '수질', '폐기물', '재활용', '미세먼지', '생태', '자연'],
+  '교통/인프라': ['도로', '교통', '철도', '항공', '공항', '항만', '고속', '버스', '지하철', '주차', '교량', '터널', '물류'],
+  '노동/고용':   ['노동', '근로', '고용', '임금', '해고', '산재', '직업', '최저임금', '실업', '퇴직', '취업', '파견', '직장'],
+};
+
+function committeeToField(committee, billName = '') {
+  // 키워드 매칭 우선 (위원회보다 정확하게 분야 구분)
+  for (const [field, keywords] of Object.entries(FIELD_KEYWORDS)) {
+    if (keywords.some(kw => billName.includes(kw))) return field;
+  }
+  // fallback: 위원회 기반
   for (const [key, val] of Object.entries(COMMITTEE_FIELD)) {
     if (committee.includes(key) || key.includes(committee)) return val;
   }
@@ -589,7 +619,7 @@ function procResultToStage(proc) {
 }
 
 function mapApiRow(row) {
-  const field = committeeToField(row.COMMITTEE || '');
+  const field = committeeToField(row.COMMITTEE || '', row.BILL_NAME || '');
   const date = (row.PROPOSE_DT || row.SUBMIT_DT || '').replace(/\./g, '-');
   const procResult = row.PROC_RESULT || '';
   return {
@@ -681,13 +711,15 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
     const baseParams = {};
     if (keyword) baseParams.BILL_NAME = keyword;
     if (selectedField !== '전체') {
-      const committee = Object.entries(COMMITTEE_FIELD).find(([, v]) => v === selectedField)?.[0] || '';
+      const committee = FIELD_TO_API_COMMITTEE[selectedField] || '';
       if (committee) baseParams.COMMITTEE = committee;
     }
 
     if (selectedStage !== '전체') {
       // 특정 처리결과 필터: 전략적 페이지 샘플링 후 클라이언트 필터
-      const displayBills = await fetchBillsByProcResult(selectedStage, baseParams);
+      const allBills = await fetchBillsByProcResult(selectedStage, baseParams);
+      // 공유 위원회(환경노동/국토교통)는 클라이언트 필드 필터 추가 적용
+      const displayBills = selectedField === '전체' ? allBills : allBills.filter(b => b.field === selectedField);
       loadedBills = displayBills;
       apiLoaded = true;
       document.getElementById('result-count').textContent = `${displayBills.length.toLocaleString()}건`;
@@ -698,7 +730,9 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
       const params = { pIndex: page, pSize: PAGE_SIZE, ...baseParams };
       const data = await apiFetch(params);
       const { total, rows } = parseApiRows(data);
-      loadedBills = rows.map(mapApiRow);
+      const mapped = rows.map(mapApiRow);
+      // 공유 위원회(환경노동/국토교통)는 클라이언트 필드 필터 추가 적용
+      loadedBills = selectedField === '전체' ? mapped : mapped.filter(b => b.field === selectedField);
       apiLoaded = true;
       document.getElementById('result-count').textContent = `총 ${total.toLocaleString()}건`;
       renderBillsGrid('topics-bills-grid', loadedBills);
