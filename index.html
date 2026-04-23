@@ -721,6 +721,8 @@ async function fetchBillsByProcResult(filterVal, baseParams) {
 
 async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOverride = null } = {}) {
   document.getElementById('topics-header').querySelector('h2').textContent = '주제별 법안 둘러보기';
+  document.getElementById('topics-header').querySelector('p').textContent = '나의 관심사에 맞는 법안을 확인해보세요.';
+  document.querySelectorAll('#page-topics .filter-block').forEach(el => el.style.display = '');
   if (page === 1) currentPageWindow = 0;
   if (fieldOverride !== null) selectedField = fieldOverride;
   if (stageOverride !== null) selectedStage = stageOverride;
@@ -809,7 +811,12 @@ function renderSpotlightGrid(items) {
 function showAllSpotlight() {
   if (!spotlightBills.length) { navigate('topics', null); return; }
   navigate('topics', null);
+
+  // 필터 UI 숨김
+  document.querySelectorAll('#page-topics .filter-block').forEach(el => el.style.display = 'none');
   document.getElementById('topics-header').querySelector('h2').textContent = '지금 주목할 법안';
+  document.getElementById('topics-header').querySelector('p').textContent = '주목도가 높은 법안들을 모았어요.';
+
   loadedBills = spotlightBills.map(s => ({
     ...s,
     fromApi:    true,
