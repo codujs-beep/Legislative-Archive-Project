@@ -95,6 +95,7 @@
     .bill-card .proc-badge.rejected { background: #fee2e2; color: #991b1b; }
     .bill-card .proc-badge.discarded{ background: #fef3c7; color: #92400e; }
     .bill-card .proc-badge.ongoing  { background: #eff6ff; color: #1d4ed8; }
+    .bill-card .resubmit-badge { font-size: 11px; background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; border-radius: 4px; padding: 1px 6px; margin-left: 6px; white-space: nowrap; }
 
     /* ── 주제별 법안 ── */
     #page-topics { padding: 32px; gap: 0; }
@@ -726,12 +727,11 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
     if (selectedStage !== '전체') {
       // 특정 처리결과 필터: 전략적 페이지 샘플링 후 클라이언트 필터
       const allBills = await fetchBillsByProcResult(selectedStage, baseParams);
-      // 공유 위원회(환경노동/국토교통)는 클라이언트 필드 필터 추가 적용
-      const displayBills = selectedField === '전체' ? allBills : allBills.filter(b => b.field === selectedField);
-      loadedBills = displayBills;
+      const filtered = selectedField === '전체' ? allBills : allBills.filter(b => b.field === selectedField);
+      loadedBills = deduplicateBills(filtered);
       apiLoaded = true;
-      document.getElementById('result-count').textContent = `${displayBills.length.toLocaleString()}건`;
-      renderBillsGrid('topics-bills-grid', displayBills);
+      document.getElementById('result-count').textContent = `${loadedBills.length.toLocaleString()}건`;
+      renderBillsGrid('topics-bills-grid', loadedBills);
       renderPagination(1, 1);
     } else {
       // 전체: 일반 페이지 조회
@@ -739,8 +739,8 @@ async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOv
       const data = await apiFetch(params);
       const { total, rows } = parseApiRows(data);
       const mapped = rows.map(mapApiRow);
-      // 공유 위원회(환경노동/국토교통)는 클라이언트 필드 필터 추가 적용
-      loadedBills = selectedField === '전체' ? mapped : mapped.filter(b => b.field === selectedField);
+      const filtered = selectedField === '전체' ? mapped : mapped.filter(b => b.field === selectedField);
+      loadedBills = deduplicateBills(filtered);
       apiLoaded = true;
       document.getElementById('result-count').textContent = `총 ${total.toLocaleString()}건`;
       renderBillsGrid('topics-bills-grid', loadedBills);
@@ -803,6 +803,26 @@ function applyLocalFilters() {
 function showGridLoading(gridId) {
   document.getElementById(gridId).innerHTML =
     '<div class="loading-wrap"><div class="spinner"></div>법안 데이터를 불러오는 중...</div>';
+}
+
+// 같은 제목의 법안을 묶어 최신 날짜만 남기고 발의 횟수를 기록
+function deduplicateBills(bills) {
+  const map = new Map();
+  for (const b of bills) {
+    const key = b.title.trim();
+    const entry = map.get(key);
+    if (!entry) {
+      map.set(key, { bill: { ...b, resubmitCount: 1 }, count: 1 });
+    } else {
+      entry.count++;
+      if ((b.date || '') >= (entry.bill.date || '')) {
+        entry.bill = { ...b, resubmitCount: entry.count };
+      } else {
+        entry.bill.resubmitCount = entry.count;
+      }
+    }
+  }
+  return [...map.values()].map(({ bill }) => bill);
 }
 
 function renderBillsGrid(gridId, bills) {
@@ -892,7 +912,10 @@ function billCardHTML(b, localIdx) {
       <div class="tag">${b.field}</div>
       ${friendlyHTML}
       <div class="bill-title">${b.title}</div>
-      <div class="bill-meta">${(b.date || '').replace(/-/g,'.')} 발의</div>
+      <div class="bill-meta">
+        ${(b.date || '').replace(/-/g,'.')} 발의
+        ${b.resubmitCount > 1 ? `<span class="resubmit-badge">${b.resubmitCount}번째 발의</span>` : ''}
+      </div>
       <span class="proc-badge ${badgeCls}">${procLabel}</span>
     </div>`;
 }
