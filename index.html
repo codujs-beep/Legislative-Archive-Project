@@ -319,6 +319,7 @@
           <button class="field-btn" data-field="세금/재정" onclick="selectField(this)">세금/재정</button>
           <button class="field-btn" data-field="교육" onclick="selectField(this)">교육</button>
           <button class="field-btn" data-field="육아/가족" onclick="selectField(this)">육아/가족</button>
+          <button class="field-btn" data-field="성" onclick="selectField(this)">성</button>
           <button class="field-btn" data-field="의료/보건" onclick="selectField(this)">의료/보건</button>
           <button class="field-btn" data-field="환경" onclick="selectField(this)">환경</button>
           <button class="field-btn" data-field="디지털/AI" onclick="selectField(this)">디지털/AI</button>
@@ -526,6 +527,7 @@ const FIELD_TO_API_COMMITTEE = {
   '교육':        '교육위원회',
   '의료/보건':   '보건복지위원회',
   '육아/가족':   '여성가족위원회',
+  '성':          '여성가족위원회',
   '디지털/AI':   '과학기술정보방송통신위원회',
   '농어업':      '농림축산식품해양수산위원회',
   '사법/인권':   '법제사법위원회',
@@ -533,7 +535,9 @@ const FIELD_TO_API_COMMITTEE = {
 };
 
 // 제목 키워드로 분야를 더 정확히 구분 (공유 위원회 처리)
+// '성'을 맨 앞에 두어 성범죄 키워드가 육아/가족보다 먼저 매칭되도록 함
 const FIELD_KEYWORDS = {
+  '성':          ['성범죄', '성폭력', '성희롱', '성추행', '성착취', '성매매', '강간', '강제추행', '성보호', '디지털성범죄'],
   '부동산':      ['부동산', '주택', '임대', '아파트', '청약', '전세', '분양', '재개발', '재건축', '도시정비', '토지', '주거'],
   '환경':        ['환경', '기후', '탄소', '에너지', '녹색', '온실', '대기', '수질', '폐기물', '재활용', '미세먼지', '생태', '자연'],
   '교통/인프라': ['도로', '교통', '철도', '항공', '공항', '항만', '고속', '버스', '지하철', '주차', '교량', '터널', '물류'],
