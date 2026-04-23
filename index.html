@@ -310,7 +310,7 @@
       <section id="featured">
         <div id="featured-header">
           <h2>지금 주목할 법안</h2>
-          <button id="view-all-btn" onclick="navigate('topics', null)">전체보기</button>
+          <button id="view-all-btn" onclick="showAllSpotlight()">전체보기</button>
         </div>
         <div id="home-bills-grid" class="bills-grid"></div>
       </section>
@@ -720,6 +720,7 @@ async function fetchBillsByProcResult(filterVal, baseParams) {
 }
 
 async function loadBills({ page = 1, keyword = '', fieldOverride = null, stageOverride = null } = {}) {
+  document.getElementById('topics-header').querySelector('h2').textContent = '주제별 법안 둘러보기';
   if (page === 1) currentPageWindow = 0;
   if (fieldOverride !== null) selectedField = fieldOverride;
   if (stageOverride !== null) selectedStage = stageOverride;
@@ -803,6 +804,29 @@ function renderSpotlightGrid(items) {
       <span class="spotlight-badge ${spotlightBadgeCls(b.category)}">${b.category}</span>
       <div class="spotlight-summary">${b.summary}</div>
     </div>`).join('');
+}
+
+function showAllSpotlight() {
+  if (!spotlightBills.length) { navigate('topics', null); return; }
+  navigate('topics', null);
+  document.getElementById('topics-header').querySelector('h2').textContent = '지금 주목할 법안';
+  loadedBills = spotlightBills.map(s => ({
+    ...s,
+    fromApi:    true,
+    field:      committeeToField(s.committee || '', s.title || ''),
+    jobs:       ['전체'],
+    regions:    ['전체'],
+    stage:      procResultToStage(s.procResult || ''),
+    stageDates: Array(6).fill(''),
+    impact:     [],
+    keyPoints:  [],
+    desc:       s.summary,
+    sourceUrl:  s.sourceUrl || 'https://likms.assembly.go.kr/bill/main.do',
+  }));
+  apiLoaded = true;
+  document.getElementById('result-count').textContent = `총 ${loadedBills.length}건`;
+  renderBillsGrid('topics-bills-grid', loadedBills);
+  renderPagination(1, 1);
 }
 
 function openSpotlightBill(idx) {
