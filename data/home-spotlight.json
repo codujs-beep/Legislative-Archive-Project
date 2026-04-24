@@ -1,14 +1,113 @@
 {
-  "generated": "2026-04-23",
+  "generated": "2026-04-24",
   "items": [
+    {
+      "billNo": "2218594",
+      "title": "아동수당법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "아동수당을 받을 수 있어요.",
+      "date": "2026-04-23",
+      "committee": "",
+      "proposer": "김대식의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218593",
+      "title": "초·중등교육법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "교육을 받을 수 있어요.",
+      "date": "2026-04-23",
+      "committee": "",
+      "proposer": "서지영의원 등 16인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218587",
+      "title": "모자보건법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "모자보건을 받을 수 있어요.",
+      "date": "2026-04-23",
+      "committee": "",
+      "proposer": "서명옥의원 등 12인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218567",
+      "title": "교원의 지위 향상 및 교육활동 보호를 위한 특별법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "교원의 보호를 받을 수 있어요.",
+      "date": "2026-04-23",
+      "committee": "",
+      "proposer": "정성국의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218566",
+      "title": "주택법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "주거를 편리하게 할 수 있어요.",
+      "date": "2026-04-23",
+      "committee": "",
+      "proposer": "이종욱의원 등 12인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
     {
       "billNo": "2218501",
       "title": "예방접종관리법안",
       "category": "국민 생활 직결 분야",
-      "summary": "예방접종 관리를 해요.",
+      "summary": "예방접종을 받을 수 있어요.",
       "date": "2026-04-22",
-      "committee": "",
+      "committee": "보건복지위원회",
       "proposer": "한지아의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218498",
+      "title": "주차장법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "주차 서비스를 받을 수 있어요.",
+      "date": "2026-04-22",
+      "committee": "국토교통위원회",
+      "proposer": "박민규의원 등 16인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218479",
+      "title": "공동주택관리법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "주거를 편리하게 할 수 있어요.",
+      "date": "2026-04-21",
+      "committee": "국토교통위원회",
+      "proposer": "소병훈의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218478",
+      "title": "공인중개사법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "부동산 거래를 간편하게 해요.",
+      "date": "2026-04-21",
+      "committee": "국토교통위원회",
+      "proposer": "소병훈의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218477",
+      "title": "국민건강보험법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "건강보험 혜택을 받을 수 있어요.",
+      "date": "2026-04-21",
+      "committee": "보건복지위원회",
+      "proposer": "김미애의원 등 10인",
       "procResult": "",
       "sourceUrl": ""
     },
@@ -16,7 +115,7 @@
       "billNo": "2218459",
       "title": "주택법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "주택 문제를 해결해요.",
+      "summary": "주거를 편리하게 할 수 있어요.",
       "date": "2026-04-21",
       "committee": "국토교통위원회",
       "proposer": "이종배의원 등 12인",
@@ -24,46 +123,24 @@
       "sourceUrl": ""
     },
     {
+      "billNo": "2218450",
+      "title": "장애인연금법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "장애인연금을 받을 수 있어요.",
+      "date": "2026-04-20",
+      "committee": "보건복지위원회",
+      "proposer": "이수진의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
       "billNo": "2218440",
       "title": "교통약자의 이동편의 증진법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "교통 약자를 지원해요.",
+      "summary": "교통약자의 편의를 받을 수 있어요.",
       "date": "2026-04-20",
       "committee": "국토교통위원회",
       "proposer": "정희용의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2218426",
-      "title": "전세사기피해자 지원 및 주거안정에 관한 특별법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "전세 피해를 도와요.",
-      "date": "2026-04-17",
-      "committee": "국토교통위원회",
-      "proposer": "문진석의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2218423",
-      "title": "노숙인 등의 복지 및 자립지원에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "노숙인을 지원해요.",
-      "date": "2026-04-17",
-      "committee": "보건복지위원회",
-      "proposer": "장종태의원 등 12인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2218422",
-      "title": "고독사 예방 및 관리에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "고독사 예방을 지원해요.",
-      "date": "2026-04-17",
-      "committee": "보건복지위원회",
-      "proposer": "김정호의원 등 13인",
       "procResult": "",
       "sourceUrl": ""
     }
