@@ -1,36 +1,113 @@
 {
-  "generated": "2026-04-29",
+  "generated": "2026-04-30",
   "items": [
+    {
+      "billNo": "2218716",
+      "title": "아동복지법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "아동 복지 향상을 위한 법안",
+      "date": "2026-04-29",
+      "committee": "",
+      "proposer": "고동진의원 등 16인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218715",
+      "title": "정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "정신건강 지원 확대 법안",
+      "date": "2026-04-29",
+      "committee": "",
+      "proposer": "장종태의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218714",
+      "title": "국내입양에 관한 특별법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "국내 입양 절차 개선 법안",
+      "date": "2026-04-29",
+      "committee": "",
+      "proposer": "김미애의원 등 12인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218712",
+      "title": "재난 및 안전관리 기본법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "재난 안전 관리 체계 개선 법안",
+      "date": "2026-04-29",
+      "committee": "",
+      "proposer": "이춘석의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218702",
+      "title": "주택임대차보호법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "주택 임대차 보호 강화 법안",
+      "date": "2026-04-29",
+      "committee": "",
+      "proposer": "강선영의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218695",
+      "title": "초·중등교육법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "초·중등 교육 지원 법안",
+      "date": "2026-04-29",
+      "committee": "",
+      "proposer": "서일준의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218692",
+      "title": "학생 통학지원에 관한 법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "학생 통학 지원 관련 법안",
+      "date": "2026-04-29",
+      "committee": "",
+      "proposer": "이언주의원 등 14인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2218683",
+      "title": "청년고용촉진 특별법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "청년 고용 지원 법안",
+      "date": "2026-04-29",
+      "committee": "",
+      "proposer": "윤준병의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
     {
       "billNo": "2218679",
       "title": "소득세법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "소득세를 조정해요",
+      "category": "A",
+      "summary": "소득세 관련 세법 개정",
       "date": "2026-04-28",
-      "committee": "",
+      "committee": "재정경제기획위원회",
       "proposer": "김미애의원 등 14인",
       "procResult": "",
       "sourceUrl": ""
     },
     {
-      "billNo": "2218678",
-      "title": "지역중소기업 육성 및 혁신촉진 등에 관한 법률 일부개정법률안",
+      "billNo": "2218651",
+      "title": "도로교통법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "지역기업 지원을 해요",
+      "summary": "도로교통 안전 강화 법안",
       "date": "2026-04-28",
-      "committee": "",
-      "proposer": "김성원의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2218667",
-      "title": "스토킹범죄의 처벌 등에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "스토킹 범죄를 처벌해요",
-      "date": "2026-04-28",
-      "committee": "",
-      "proposer": "유상범의원 등 12인",
+      "committee": "행정안전위원회",
+      "proposer": "윤준병의원 등 10인",
       "procResult": "",
       "sourceUrl": ""
     }
