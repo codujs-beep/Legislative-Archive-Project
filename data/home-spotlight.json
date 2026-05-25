@@ -1,11 +1,11 @@
 {
-  "generated": "2026-05-24",
+  "generated": "2026-05-25",
   "items": [
     {
       "billNo": "2219057",
       "title": "교원의 지위 향상 및 교육활동 보호를 위한 특별법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "교원의 지위 향상 지원해요",
+      "category": "C",
+      "summary": "교원 지위 보호 법안이에요.",
       "date": "2026-05-22",
       "committee": "",
       "proposer": "김선교의원 등 10인",
@@ -15,8 +15,8 @@
     {
       "billNo": "2219054",
       "title": "도로법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "도로 보수 및 관리 강화해요",
+      "category": "C",
+      "summary": "도로 관련 법안이에요.",
       "date": "2026-05-22",
       "committee": "",
       "proposer": "정일영의원 등 11인",
@@ -24,21 +24,10 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2219047",
-      "title": "소방공무원법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "소방공무원 처우 향상해요",
-      "date": "2026-05-22",
-      "committee": "",
-      "proposer": "채현일의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
       "billNo": "2219046",
       "title": "아동복지법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "아동복지 향상 지원해요",
+      "category": "B",
+      "summary": "아동복지 법안 재논의 중이에요.",
       "date": "2026-05-21",
       "committee": "보건복지위원회",
       "proposer": "강경숙의원 등 13인",
@@ -48,8 +37,8 @@
     {
       "billNo": "2219043",
       "title": "고등교육법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "고등교육 개선 지원해요",
+      "category": "C",
+      "summary": "고등교육 관련 법안이에요.",
       "date": "2026-05-21",
       "committee": "교육위원회",
       "proposer": "강경숙의원 등 11인",
@@ -59,8 +48,8 @@
     {
       "billNo": "2219042",
       "title": "장애인 등에 대한 특수교육법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "특수교육 확대 지원해요",
+      "category": "C",
+      "summary": "장애인 특수교육에 대한 법안이에요.",
       "date": "2026-05-21",
       "committee": "교육위원회",
       "proposer": "강경숙의원 등 12인",
@@ -68,21 +57,10 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2219041",
-      "title": "청소년활동 진흥법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "청소년활동 지원 확대해요",
-      "date": "2026-05-21",
-      "committee": "성평등가족위원회",
-      "proposer": "강경숙의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
       "billNo": "2219038",
       "title": "필수의료 강화 지원 및 지역 간 의료격차 해소를 위한 특별법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "의료격차 해소 지원해요",
+      "category": "C",
+      "summary": "의료 지원 법안이에요.",
       "date": "2026-05-21",
       "committee": "보건복지위원회",
       "proposer": "김윤의원 등 14인",
@@ -92,8 +70,8 @@
     {
       "billNo": "2219035",
       "title": "119구조·구급에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "구급 서비스 강화해요",
+      "category": "C",
+      "summary": "구조·구급 관련 법안이에요.",
       "date": "2026-05-21",
       "committee": "행정안전위원회",
       "proposer": "양부남의원 등 10인",
@@ -101,65 +79,10 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2219033",
-      "title": "서민의 금융생활 지원에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "서민 금융 지원 강화해요",
-      "date": "2026-05-20",
-      "committee": "정무위원회",
-      "proposer": "김상훈의원 등 12인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2219030",
-      "title": "모자보건법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "모자보건 지원 확대해요",
-      "date": "2026-05-20",
-      "committee": "보건복지위원회",
-      "proposer": "김민전의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2219026",
-      "title": "장애인고용촉진 및 직업재활법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "장애인 고용 지원 강화해요",
-      "date": "2026-05-19",
-      "committee": "기후에너지환경노동위원회",
-      "proposer": "김예지의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2219020",
-      "title": "학교안전사고 예방 및 보상에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "학교 안전사고 예방해요",
-      "date": "2026-05-19",
-      "committee": "교육위원회",
-      "proposer": "양부남의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2219013",
-      "title": "사회복지사업법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "사회복지사업 확대해요",
-      "date": "2026-05-19",
-      "committee": "보건복지위원회",
-      "proposer": "박희승의원 등 13인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
       "billNo": "2219011",
       "title": "감염병의 예방 및 관리에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "감염병 관리 강화해요",
+      "category": "C",
+      "summary": "감염병 예방 법안이에요.",
       "date": "2026-05-19",
       "committee": "보건복지위원회",
       "proposer": "김예지의원 등 10인",
@@ -169,8 +92,8 @@
     {
       "billNo": "2218981",
       "title": "학교폭력예방 및 대책에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "학교폭력 예방 강화해요",
+      "category": "C",
+      "summary": "학교폭력 예방 법안이에요.",
       "date": "2026-05-14",
       "committee": "교육위원회",
       "proposer": "김용태의원 등 12인",
@@ -180,8 +103,8 @@
     {
       "billNo": "2218976",
       "title": "주택도시기금법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "주택 기금 지원 확대해요",
+      "category": "C",
+      "summary": "주택도시 관련 법안이에요.",
       "date": "2026-05-14",
       "committee": "국토교통위원회",
       "proposer": "조은희의원 등 12인",
