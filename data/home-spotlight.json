@@ -1,11 +1,99 @@
 {
-  "generated": "2026-06-10",
+  "generated": "2026-06-11",
   "items": [
+    {
+      "billNo": "2219174",
+      "title": "도시 및 주거환경정비법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "주택 환경을 개선해요",
+      "date": "2026-06-10",
+      "committee": "",
+      "proposer": "김희정의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2219172",
+      "title": "도시개발법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "도시 개발을 지원해요",
+      "date": "2026-06-10",
+      "committee": "",
+      "proposer": "김희정의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2219169",
+      "title": "모자보건법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "모자 보건을 지원해요",
+      "date": "2026-06-10",
+      "committee": "",
+      "proposer": "안철수의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2219167",
+      "title": "의료·요양 등 지역 돌봄의 통합지원에 관한 법률 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "지역 돌봄 서비스를 강화해요",
+      "date": "2026-06-10",
+      "committee": "",
+      "proposer": "이훈기의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2219166",
+      "title": "공공주택 특별법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "공공주택을 확대해요",
+      "date": "2026-06-10",
+      "committee": "",
+      "proposer": "문진석의원 등 12인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2219157",
+      "title": "고용보험법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "고용보험 혜택을 확대해요",
+      "date": "2026-06-10",
+      "committee": "",
+      "proposer": "박홍배의원 등 14인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2219154",
+      "title": "채용절차의 공정화에 관한 법률 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "채용 절차를 공정하게 해요",
+      "date": "2026-06-10",
+      "committee": "",
+      "proposer": "박홍배의원 등 13인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2219150",
+      "title": "응급의료에 관한 법률 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "응급의료 시스템을 개선해요",
+      "date": "2026-06-10",
+      "committee": "",
+      "proposer": "허영의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
     {
       "billNo": "2219149",
       "title": "취업 후 학자금 상환 특별법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "학자금을 받을 수 있어요.",
+      "category": "장기 계류 후 재심사 시작",
+      "summary": "학자금 상환 방안을 재논의해요",
       "date": "2026-06-09",
       "committee": "",
       "proposer": "조정훈의원 등 12인",
@@ -16,7 +104,7 @@
       "billNo": "2219148",
       "title": "도로교통법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "교통 안전을 강화해요.",
+      "summary": "교통 안전을 강화해요",
       "date": "2026-06-09",
       "committee": "",
       "proposer": "김기웅의원 등 10인",
@@ -24,21 +112,10 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2219147",
-      "title": "감염병의 예방 및 관리에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "감염병 예방을 강화해요.",
-      "date": "2026-06-09",
-      "committee": "",
-      "proposer": "이수진의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
       "billNo": "2219143",
       "title": "장애인 등에 대한 특수교육법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "특수교육지원이 확장돼요.",
+      "summary": "장애인 교육 지원을 강화해요",
       "date": "2026-06-09",
       "committee": "",
       "proposer": "김재섭의원 등 10인",
@@ -46,46 +123,13 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2219136",
-      "title": "공직선거법 일부개정법률안",
-      "category": "표결까지 D-7 이내",
-      "summary": "본회의 표결이 임박했어요.",
-      "date": "2026-06-08",
-      "committee": "",
-      "proposer": "고동진의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
       "billNo": "2219131",
       "title": "주택임대차보호법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "주거 임대 보호를 강화해요.",
+      "summary": "주택 임대차 보호를 강화해요",
       "date": "2026-06-08",
       "committee": "",
       "proposer": "배준영의원 등 11인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2219126",
-      "title": "장애인고용촉진 및 직업재활법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "장애인 고용이 촉진돼요.",
-      "date": "2026-06-08",
-      "committee": "",
-      "proposer": "이정헌의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2219121",
-      "title": "다중이용업소의 안전관리에 관한 특별법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "안전 관리를 강화해요.",
-      "date": "2026-06-08",
-      "committee": "",
-      "proposer": "이정헌의원 등 11인",
       "procResult": "",
       "sourceUrl": ""
     }
