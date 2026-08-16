@@ -1,11 +1,11 @@
 {
-  "generated": "2026-08-15",
+  "generated": "2026-08-16",
   "items": [
     {
       "billNo": "2220607",
       "title": "상가건물 임대차보호법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "임대차 보호에 도움 돼요",
+      "summary": "임대차 계약 보호해요",
       "date": "2026-08-14",
       "committee": "",
       "proposer": "박균택의원 등 10인",
@@ -16,7 +16,7 @@
       "billNo": "2220606",
       "title": "서민의 금융생활 지원에 관한 법률 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "서민 금융 지원받을 수 있어요",
+      "summary": "금융 지원 받을 수 있어요",
       "date": "2026-08-14",
       "committee": "",
       "proposer": "송언석의원 등 11인",
@@ -38,7 +38,7 @@
       "billNo": "2220602",
       "title": "근로기준법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "근로기준 보호받을 수 있어요",
+      "summary": "근로 조건 개선해요",
       "date": "2026-08-14",
       "committee": "",
       "proposer": "김태규의원 등 10인",
@@ -46,10 +46,21 @@
       "sourceUrl": ""
     },
     {
+      "billNo": "2220599",
+      "title": "서민의 금융생활 지원에 관한 법률 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "금융 지원 받을 수 있어요",
+      "date": "2026-08-14",
+      "committee": "",
+      "proposer": "문진석의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
       "billNo": "2220585",
       "title": "여객자동차 운수사업법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "여객 운수 사업 관련 규정이에요",
+      "summary": "여객운수 서비스 개선해요",
       "date": "2026-08-14",
       "committee": "",
       "proposer": "임종득의원 등 10인",
@@ -57,32 +68,10 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2220577",
-      "title": "검역법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "검역 기준 강화돼요",
-      "date": "2026-08-13",
-      "committee": "보건복지위원회",
-      "proposer": "이만희의원 등 11인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2220568",
-      "title": "자전거 이용 활성화에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "자전거 이용 장려돼요",
-      "date": "2026-08-13",
-      "committee": "행정안전위원회",
-      "proposer": "김건의원 등 11인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
       "billNo": "2220567",
       "title": "소상공인 보호 및 지원에 관한 법률 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "소상공인 지원받을 수 있어요",
+      "summary": "소상공인 지원 확대해요",
       "date": "2026-08-13",
       "committee": "산업통상자원중소벤처기업위원회",
       "proposer": "오세희의원 등 11인",
@@ -90,21 +79,10 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2220566",
-      "title": "도시 및 주거환경정비법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "주거환경 정비 지원해요",
-      "date": "2026-08-13",
-      "committee": "국토교통위원회",
-      "proposer": "김정재의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
       "billNo": "2220565",
       "title": "고용보험법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "고용 보험 혜택 확대돼요",
+      "summary": "고용안전망 확대해요",
       "date": "2026-08-13",
       "committee": "기후에너지환경노동위원회",
       "proposer": "김재섭의원 등 10인",
