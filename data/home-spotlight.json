@@ -1,11 +1,11 @@
 {
-  "generated": "2026-08-16",
+  "generated": "2026-08-17",
   "items": [
     {
       "billNo": "2220607",
       "title": "상가건물 임대차보호법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "임대차 계약 보호해요",
+      "summary": "임대차 보호 강화해요",
       "date": "2026-08-14",
       "committee": "",
       "proposer": "박균택의원 등 10인",
@@ -16,7 +16,7 @@
       "billNo": "2220606",
       "title": "서민의 금융생활 지원에 관한 법률 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "금융 지원 받을 수 있어요",
+      "summary": "서민 금융 지원해요",
       "date": "2026-08-14",
       "committee": "",
       "proposer": "송언석의원 등 11인",
@@ -24,21 +24,10 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2220604",
-      "title": "건축법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "건축 관련 규제 완화해요",
-      "date": "2026-08-14",
-      "committee": "",
-      "proposer": "장종태의원 등 14인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
       "billNo": "2220602",
       "title": "근로기준법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "근로 조건 개선해요",
+      "summary": "근로 기준 향상해요",
       "date": "2026-08-14",
       "committee": "",
       "proposer": "김태규의원 등 10인",
@@ -46,46 +35,13 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2220599",
-      "title": "서민의 금융생활 지원에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "금융 지원 받을 수 있어요",
-      "date": "2026-08-14",
-      "committee": "",
-      "proposer": "문진석의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
       "billNo": "2220585",
       "title": "여객자동차 운수사업법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "여객운수 서비스 개선해요",
+      "summary": "여객 운수 관리 강화해요",
       "date": "2026-08-14",
       "committee": "",
       "proposer": "임종득의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2220567",
-      "title": "소상공인 보호 및 지원에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "소상공인 지원 확대해요",
-      "date": "2026-08-13",
-      "committee": "산업통상자원중소벤처기업위원회",
-      "proposer": "오세희의원 등 11인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2220565",
-      "title": "고용보험법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "고용안전망 확대해요",
-      "date": "2026-08-13",
-      "committee": "기후에너지환경노동위원회",
-      "proposer": "김재섭의원 등 10인",
       "procResult": "",
       "sourceUrl": ""
     }
