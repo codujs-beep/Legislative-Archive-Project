@@ -1,13 +1,57 @@
 {
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "items": [
+    {
+      "billNo": "2220629",
+      "title": "관광진흥개발기금법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "관광 진흥 지원합니다.",
+      "date": "2026-08-18",
+      "committee": "",
+      "proposer": "이재정의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2220622",
+      "title": "국민건강보험법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "건강보험 혜택 확대해요.",
+      "date": "2026-08-18",
+      "committee": "",
+      "proposer": "박지원의원 등 12인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2220619",
+      "title": "모자보건법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "모자보건 지원합니다.",
+      "date": "2026-08-18",
+      "committee": "",
+      "proposer": "조정훈의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2220614",
+      "title": "택시운송사업의 발전에 관한 법률 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "택시 서비스 개선합니다.",
+      "date": "2026-08-18",
+      "committee": "",
+      "proposer": "안태준의원 등 13인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
     {
       "billNo": "2220607",
       "title": "상가건물 임대차보호법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "임대차 보호를 강화해요",
+      "summary": "상가 임대 보호해요.",
       "date": "2026-08-14",
-      "committee": "",
+      "committee": "법제사법위원회",
       "proposer": "박균택의원 등 10인",
       "procResult": "",
       "sourceUrl": ""
@@ -16,9 +60,9 @@
       "billNo": "2220606",
       "title": "서민의 금융생활 지원에 관한 법률 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "금융 지원이 확대돼요",
+      "summary": "서민 금융 지원해요.",
       "date": "2026-08-14",
-      "committee": "",
+      "committee": "정무위원회",
       "proposer": "송언석의원 등 11인",
       "procResult": "",
       "sourceUrl": ""
@@ -27,9 +71,9 @@
       "billNo": "2220604",
       "title": "건축법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "건축 규제가 개선돼요",
+      "summary": "건축 규제를 완화해요.",
       "date": "2026-08-14",
-      "committee": "",
+      "committee": "국토교통위원회",
       "proposer": "장종태의원 등 14인",
       "procResult": "",
       "sourceUrl": ""
@@ -38,21 +82,10 @@
       "billNo": "2220602",
       "title": "근로기준법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "근로자의 권리가 보호돼요",
+      "summary": "근로 기준 보장해요.",
       "date": "2026-08-14",
-      "committee": "",
+      "committee": "기후에너지환경노동위원회",
       "proposer": "김태규의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2220599",
-      "title": "서민의 금융생활 지원에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "금융 지원이 확대돼요",
-      "date": "2026-08-14",
-      "committee": "",
-      "proposer": "문진석의원 등 10인",
       "procResult": "",
       "sourceUrl": ""
     }
