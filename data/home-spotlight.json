@@ -1,80 +1,36 @@
 {
-  "generated": "2026-09-10",
+  "generated": "2026-09-11",
   "items": [
+    {
+      "billNo": "2221315",
+      "title": "전세사기피해자 지원 및 주거안정에 관한 특별법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "전세 사기 피해자 지원해요",
+      "date": "2026-09-10",
+      "committee": "",
+      "proposer": "염태영의원ㆍ엄태영의원 등 17인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221292",
+      "title": "의료법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "의료 서비스 개선해요",
+      "date": "2026-09-10",
+      "committee": "",
+      "proposer": "최혁진의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
     {
       "billNo": "2221264",
       "title": "고용보험법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "고용보험 수급을 받을 수 있어요",
+      "summary": "고용보험 확대해요",
       "date": "2026-09-09",
-      "committee": "",
+      "committee": "기후에너지환경노동위원회",
       "proposer": "정동만의원 등 11인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2221263",
-      "title": "모자보건법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "모자보건 서비스를 받을 수 있어요",
-      "date": "2026-09-09",
-      "committee": "",
-      "proposer": "임종득의원 등 11인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2221260",
-      "title": "장애인 등에 대한 특수교육법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "특수교육을 받을 수 있어요",
-      "date": "2026-09-09",
-      "committee": "",
-      "proposer": "이수진의원 등 11인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2221228",
-      "title": "의료사고 피해구제 및 의료분쟁 조정 등에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "의료사고 피해구제를 받을 수 있어요",
-      "date": "2026-09-09",
-      "committee": "",
-      "proposer": "서영석의원 등 11인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2221227",
-      "title": "장애인복지법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "장애인복지를 받을 수 있어요",
-      "date": "2026-09-09",
-      "committee": "",
-      "proposer": "서영석의원 등 11인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2221192",
-      "title": "초·중등교육법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "교육을 받을 수 있어요",
-      "date": "2026-09-08",
-      "committee": "교육위원회",
-      "proposer": "강경숙의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2221188",
-      "title": "교육기본법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "기본교육을 받아야 해요",
-      "date": "2026-09-08",
-      "committee": "교육위원회",
-      "proposer": "강경숙의원 등 12인",
       "procResult": "",
       "sourceUrl": ""
     }
