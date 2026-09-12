@@ -1,13 +1,112 @@
 {
-  "generated": "2026-09-11",
+  "generated": "2026-09-12",
   "items": [
+    {
+      "billNo": "2221355",
+      "title": "미등기 사정토지 정비를 위한 특별법안",
+      "category": "국민 생활 직결 분야",
+      "summary": "토지 정비를 지원해요",
+      "date": "2026-09-11",
+      "committee": "",
+      "proposer": "박균택의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221352",
+      "title": "전기통신금융사기 피해 방지 및 피해자산 환급에 관한 특별법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "피해자 산환급을 도와요",
+      "date": "2026-09-11",
+      "committee": "",
+      "proposer": "박상혁의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221348",
+      "title": "중소기업제품 구매촉진 및 판로지원에 관한 법률 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "중소기업 판로를 지원해요",
+      "date": "2026-09-11",
+      "committee": "",
+      "proposer": "백혜련의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221343",
+      "title": "청소년복지 지원법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "청소년 복지를 지원해요",
+      "date": "2026-09-11",
+      "committee": "",
+      "proposer": "이광희의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221340",
+      "title": "식품위생법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "식품 위생을 강화해요",
+      "date": "2026-09-11",
+      "committee": "",
+      "proposer": "박홍배의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221339",
+      "title": "도로교통법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "교통 안전을 강화해요",
+      "date": "2026-09-11",
+      "committee": "",
+      "proposer": "강명구의원 등 12인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221337",
+      "title": "고용보험법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "고용보험 혜택을 확대해요",
+      "date": "2026-09-11",
+      "committee": "",
+      "proposer": "김성원의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221335",
+      "title": "아동복지법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "아동 복지를 증진해요",
+      "date": "2026-09-11",
+      "committee": "",
+      "proposer": "김석기의원 등 13인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221329",
+      "title": "보행안전 및 편의증진에 관한 법률 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "보행 안전을 증진해요",
+      "date": "2026-09-11",
+      "committee": "",
+      "proposer": "박균택의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
     {
       "billNo": "2221315",
       "title": "전세사기피해자 지원 및 주거안정에 관한 특별법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "전세 사기 피해자 지원해요",
+      "summary": "주거 안정 지원해요",
       "date": "2026-09-10",
-      "committee": "",
+      "committee": "국토교통위원회",
       "proposer": "염태영의원ㆍ엄태영의원 등 17인",
       "procResult": "",
       "sourceUrl": ""
@@ -16,21 +115,10 @@
       "billNo": "2221292",
       "title": "의료법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "의료 서비스 개선해요",
+      "summary": "의료서비스 개선해요",
       "date": "2026-09-10",
-      "committee": "",
+      "committee": "보건복지위원회",
       "proposer": "최혁진의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2221264",
-      "title": "고용보험법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "고용보험 확대해요",
-      "date": "2026-09-09",
-      "committee": "기후에너지환경노동위원회",
-      "proposer": "정동만의원 등 11인",
       "procResult": "",
       "sourceUrl": ""
     }
