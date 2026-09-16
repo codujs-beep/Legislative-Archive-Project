@@ -1,25 +1,36 @@
 {
-  "generated": "2026-09-15",
+  "generated": "2026-09-16",
   "items": [
     {
-      "billNo": "2221376",
-      "title": "제9회 전국동시지방선거 투표용지 부족 사태 등 국민참정권 침해 의혹 진상규명을 위한 특별검사의 임명 등에 관한 법률 일부개정법률안",
+      "billNo": "2221383",
+      "title": "도로교통법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "국민참정권 침해 의혹 진상규명",
-      "date": "2026-09-14",
+      "summary": "교통 법규가 개선돼요",
+      "date": "2026-09-15",
       "committee": "",
-      "proposer": "김용민의원 등 10인",
+      "proposer": "최은석의원 등 10인",
       "procResult": "",
       "sourceUrl": ""
     },
     {
-      "billNo": "2221315",
-      "title": "전세사기피해자 지원 및 주거안정에 관한 특별법 일부개정법률안",
+      "billNo": "2221304",
+      "title": "형사소송법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "전세사기피해자 지원 및 주거안정",
+      "summary": "형사소송 절차 개선돼요",
       "date": "2026-09-10",
-      "committee": "국토교통위원회",
-      "proposer": "염태영의원ㆍ엄태영의원 등 17인",
+      "committee": "법제사법위원회",
+      "proposer": "박은정의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221298",
+      "title": "고독사 예방 및 관리에 관한 법률 전부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "고독사 방지 대책 마련해요",
+      "date": "2026-09-10",
+      "committee": "보건복지위원회",
+      "proposer": "김선민의원 등 12인",
       "procResult": "",
       "sourceUrl": ""
     }
