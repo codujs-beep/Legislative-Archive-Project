@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-03",
+  "generated": "2026-10-04",
   "items": [
     {
       "billNo": "2221787",
       "title": "근로자퇴직급여 보장법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "퇴직급여를 받을 수 있어요",
+      "summary": "퇴직급여 보장 조항이에요",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "이용우의원 등 12인",
@@ -13,10 +13,21 @@
       "sourceUrl": ""
     },
     {
+      "billNo": "2221786",
+      "title": "산업재해보상보험법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "산업재해 보상 강화해요",
+      "date": "2026-10-02",
+      "committee": "",
+      "proposer": "안호영의원 등 14인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
       "billNo": "2221784",
       "title": "종합부동산세법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "부동산 세금이 조정돼요",
+      "summary": "부동산세 조정돼요",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "김남준의원 등 10인",
@@ -27,7 +38,7 @@
       "billNo": "2221781",
       "title": "한부모가족지원법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "한부모가정 지원을 받을 수 있어요",
+      "summary": "한부모 지원 확대돼요",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "전은수의원 등 10인",
@@ -38,7 +49,7 @@
       "billNo": "2221780",
       "title": "청년기본자산지원에 관한 법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "청년 자산 지원을 받을 수 있어요",
+      "summary": "청년 기본자산 지원해요",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "박주민의원 등 26인",
@@ -49,7 +60,7 @@
       "billNo": "2221757",
       "title": "장애인 건강권 및 의료접근성 보장에 관한 법률 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "장애인 의료 접근성 보장해요",
+      "summary": "장애인 건강권 보장해요",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "박용갑의원 등 10인",
@@ -60,7 +71,7 @@
       "billNo": "2221744",
       "title": "5·18민주유공자예우 및 단체설립에 관한 법률 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "교육 정책이 개선될 수 있어요",
+      "summary": "초중등 교육 개선해요",
       "date": "2026-10-01",
       "committee": "정무위원회",
       "proposer": "이진숙의원 등 11인",
@@ -68,10 +79,32 @@
       "sourceUrl": ""
     },
     {
+      "billNo": "2221743",
+      "title": "초·중등교육법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "5·18민주화운동 예우 강화해요",
+      "date": "2026-10-01",
+      "committee": "교육위원회",
+      "proposer": "고민정의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221740",
+      "title": "가축전염병 예방법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "가축 전염병 예방해요",
+      "date": "2026-10-01",
+      "committee": "농림축산식품해양수산위원회",
+      "proposer": "김용태의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
       "billNo": "2221739",
       "title": "학교보건법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "학교 보건 제도가 개선돼요",
+      "summary": "학교 보건 개선돼요",
       "date": "2026-10-01",
       "committee": "교육위원회",
       "proposer": "백승아의원 등 14인",
@@ -79,13 +112,46 @@
       "sourceUrl": ""
     },
     {
+      "billNo": "2221738",
+      "title": "장애인연금법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "장애인 연금 개선해요",
+      "date": "2026-10-01",
+      "committee": "보건복지위원회",
+      "proposer": "박지원의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221727",
+      "title": "전자상거래 등에서의 소비자보호에 관한 법률 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "전자상거래 소비자 보호해요",
+      "date": "2026-10-01",
+      "committee": "정무위원회",
+      "proposer": "윤후덕의원 등 14인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
       "billNo": "2221726",
       "title": "의료법 일부개정법률안",
       "category": "국민 생활 직결 분야",
-      "summary": "의료 서비스가 개선돼요",
+      "summary": "의료 접근성 개선해요",
       "date": "2026-10-01",
       "committee": "보건복지위원회",
       "proposer": "권칠승의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221715",
+      "title": "고등교육법 일부개정법률안",
+      "category": "국민 생활 직결 분야",
+      "summary": "고등교육 제도 개선해요",
+      "date": "2026-10-01",
+      "committee": "교육위원회",
+      "proposer": "백승아의원 등 13인",
       "procResult": "",
       "sourceUrl": ""
     }
