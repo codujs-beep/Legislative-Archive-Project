@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-04",
+  "generated": "2026-10-05",
   "items": [
     {
       "billNo": "2221787",
       "title": "근로자퇴직급여 보장법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "퇴직급여 보장 조항이에요",
+      "category": "B",
+      "summary": "퇴직급여 보장 관련 제도 수정",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "이용우의원 등 12인",
@@ -15,8 +15,19 @@
     {
       "billNo": "2221786",
       "title": "산업재해보상보험법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "산업재해 보상 강화해요",
+      "category": "B",
+      "summary": "산업재해 보상 기준 보완",
+      "date": "2026-10-02",
+      "committee": "",
+      "proposer": "안호영의원 등 14인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221785",
+      "title": "고용보험 및 산업재해보상보험의 보험료징수 등에 관한 법률 일부개정법률안",
+      "category": "B",
+      "summary": "고용보험료 징수 관련 변경",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "안호영의원 등 14인",
@@ -26,8 +37,8 @@
     {
       "billNo": "2221784",
       "title": "종합부동산세법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "부동산세 조정돼요",
+      "category": "C",
+      "summary": "종합부동산세 관련 법 개정",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "김남준의원 등 10인",
@@ -35,10 +46,21 @@
       "sourceUrl": ""
     },
     {
+      "billNo": "2221782",
+      "title": "근로자퇴직급여 보장법 일부개정법률안",
+      "category": "B",
+      "summary": "퇴직급여 보장법 개정 추진",
+      "date": "2026-10-02",
+      "committee": "",
+      "proposer": "김정호의원 등 13인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
       "billNo": "2221781",
       "title": "한부모가족지원법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "한부모 지원 확대돼요",
+      "category": "C",
+      "summary": "한부모가족 지원 법안 개정",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "전은수의원 등 10인",
@@ -48,8 +70,8 @@
     {
       "billNo": "2221780",
       "title": "청년기본자산지원에 관한 법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "청년 기본자산 지원해요",
+      "category": "C",
+      "summary": "청년 자산 지원 법안 제정",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "박주민의원 등 26인",
@@ -57,10 +79,43 @@
       "sourceUrl": ""
     },
     {
+      "billNo": "2221773",
+      "title": "민원 처리에 관한 법률 일부개정법률안",
+      "category": "B",
+      "summary": "민원 처리 법안 개정 시도",
+      "date": "2026-10-02",
+      "committee": "",
+      "proposer": "곽상언의원 등 12인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221771",
+      "title": "성폭력범죄의 처벌 등에 관한 특례법 일부개정법률안",
+      "category": "C",
+      "summary": "성폭력범죄 처벌 강화 법안",
+      "date": "2026-10-02",
+      "committee": "",
+      "proposer": "손솔의원 등 13인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221761",
+      "title": "국민연금법 일부개정법률안",
+      "category": "B",
+      "summary": "국민연금법 개정 논의 시작",
+      "date": "2026-10-02",
+      "committee": "",
+      "proposer": "곽상언의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
       "billNo": "2221757",
       "title": "장애인 건강권 및 의료접근성 보장에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "장애인 건강권 보장해요",
+      "category": "C",
+      "summary": "장애인 건강권 보장 법안",
       "date": "2026-10-02",
       "committee": "",
       "proposer": "박용갑의원 등 10인",
@@ -68,12 +123,12 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2221744",
-      "title": "5·18민주유공자예우 및 단체설립에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "초중등 교육 개선해요",
+      "billNo": "2221745",
+      "title": "5·18민주화운동 관련자 보상 등에 관한 법률 일부개정법률안",
+      "category": "B",
+      "summary": "민주화운동 관련 보상 법안",
       "date": "2026-10-01",
-      "committee": "정무위원회",
+      "committee": "행정안전위원회",
       "proposer": "이진숙의원 등 11인",
       "procResult": "",
       "sourceUrl": ""
@@ -81,8 +136,8 @@
     {
       "billNo": "2221743",
       "title": "초·중등교육법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "5·18민주화운동 예우 강화해요",
+      "category": "C",
+      "summary": "초중등 교육법 개정 추진",
       "date": "2026-10-01",
       "committee": "교육위원회",
       "proposer": "고민정의원 등 10인",
@@ -90,21 +145,21 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2221740",
-      "title": "가축전염병 예방법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "가축 전염병 예방해요",
+      "billNo": "2221741",
+      "title": "5·18민주화운동 등에 관한 특별법 일부개정법률안",
+      "category": "B",
+      "summary": "특별법 개정 논의 재개",
       "date": "2026-10-01",
-      "committee": "농림축산식품해양수산위원회",
-      "proposer": "김용태의원 등 10인",
+      "committee": "법제사법위원회",
+      "proposer": "이진숙의원 등 11인",
       "procResult": "",
       "sourceUrl": ""
     },
     {
       "billNo": "2221739",
       "title": "학교보건법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "학교 보건 개선돼요",
+      "category": "C",
+      "summary": "학교 보건 법안 개정 시도",
       "date": "2026-10-01",
       "committee": "교육위원회",
       "proposer": "백승아의원 등 14인",
@@ -114,8 +169,8 @@
     {
       "billNo": "2221738",
       "title": "장애인연금법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "장애인 연금 개선해요",
+      "category": "C",
+      "summary": "장애인 연금법 개정 추진",
       "date": "2026-10-01",
       "committee": "보건복지위원회",
       "proposer": "박지원의원 등 10인",
@@ -123,21 +178,21 @@
       "sourceUrl": ""
     },
     {
-      "billNo": "2221727",
-      "title": "전자상거래 등에서의 소비자보호에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "전자상거래 소비자 보호해요",
+      "billNo": "2221731",
+      "title": "학교폭력예방 및 대책에 관한 법률 일부개정법률안",
+      "category": "C",
+      "summary": "학교폭력 예방 법안 개정",
       "date": "2026-10-01",
-      "committee": "정무위원회",
-      "proposer": "윤후덕의원 등 14인",
+      "committee": "교육위원회",
+      "proposer": "고민정의원 등 10인",
       "procResult": "",
       "sourceUrl": ""
     },
     {
       "billNo": "2221726",
       "title": "의료법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "의료 접근성 개선해요",
+      "category": "C",
+      "summary": "의료법 개정으로 의료서비스 개선",
       "date": "2026-10-01",
       "committee": "보건복지위원회",
       "proposer": "권칠승의원 등 10인",
@@ -147,11 +202,22 @@
     {
       "billNo": "2221715",
       "title": "고등교육법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "고등교육 제도 개선해요",
+      "category": "C",
+      "summary": "고등교육법 개정으로 교육 질 향상",
       "date": "2026-10-01",
       "committee": "교육위원회",
       "proposer": "백승아의원 등 13인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2221714",
+      "title": "교원의 지위 향상 및 교육활동 보호를 위한 특별법 일부개정법률안",
+      "category": "C",
+      "summary": "교원의 지위 향상 법안 개정",
+      "date": "2026-10-01",
+      "committee": "교육위원회",
+      "proposer": "백승아의원 등 12인",
       "procResult": "",
       "sourceUrl": ""
     }
