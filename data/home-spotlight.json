@@ -1,13 +1,112 @@
 {
-  "generated": "2026-11-12",
+  "generated": "2026-11-13",
   "items": [
+    {
+      "billNo": "2222754",
+      "title": "교육환경 보호에 관한 법률 일부개정법률안",
+      "category": "C",
+      "summary": "교육환경을 보호해요",
+      "date": "2026-11-12",
+      "committee": "",
+      "proposer": "임이자의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2222749",
+      "title": "유아교육법 일부개정법률안",
+      "category": "C",
+      "summary": "유아 교육의 질 개선해요",
+      "date": "2026-11-12",
+      "committee": "",
+      "proposer": "임이자의원 등 12인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2222748",
+      "title": "교원의 지위 향상 및 교육활동 보호를 위한 특별법 일부개정법률안",
+      "category": "C",
+      "summary": "교원의 권리 보호해요",
+      "date": "2026-11-12",
+      "committee": "",
+      "proposer": "임이자의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2222746",
+      "title": "응급의료에 관한 법률 일부개정법률안",
+      "category": "C",
+      "summary": "응급의료 서비스 향상해요",
+      "date": "2026-11-12",
+      "committee": "",
+      "proposer": "서영석의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2222745",
+      "title": "군보건의료에 관한 법률 일부개정법률안",
+      "category": "C",
+      "summary": "군 의료 서비스 개선해요",
+      "date": "2026-11-12",
+      "committee": "",
+      "proposer": "유용원의원 등 13인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2222743",
+      "title": "초·중등교육법 일부개정법률안",
+      "category": "C",
+      "summary": "초중등 교육 개선해요",
+      "date": "2026-11-12",
+      "committee": "",
+      "proposer": "임이자의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2222731",
+      "title": "한국주택금융공사법 일부개정법률안",
+      "category": "C",
+      "summary": "주택 금융 지원 확대해요",
+      "date": "2026-11-12",
+      "committee": "",
+      "proposer": "손명수의원 등 11인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2222715",
+      "title": "응급의료에 관한 법률 일부개정법률안",
+      "category": "C",
+      "summary": "응급의료 시스템 강화해요",
+      "date": "2026-11-12",
+      "committee": "",
+      "proposer": "곽규택의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
+    {
+      "billNo": "2222714",
+      "title": "남녀고용평등과 일·가정 양립 지원에 관한 법률 일부개정법률안",
+      "category": "C",
+      "summary": "일·가정 양립 지원해요",
+      "date": "2026-11-12",
+      "committee": "",
+      "proposer": "박해철의원 등 10인",
+      "procResult": "",
+      "sourceUrl": ""
+    },
     {
       "billNo": "2222697",
       "title": "스토킹범죄의 처벌 등에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "스토킹범죄 처벌 강화해요",
+      "category": "A",
+      "summary": "스토킹 범죄 처벌 강화해요",
       "date": "2026-11-11",
-      "committee": "",
+      "committee": "법제사법위원회",
       "proposer": "전진숙의원 등 10인",
       "procResult": "",
       "sourceUrl": ""
@@ -15,10 +114,10 @@
     {
       "billNo": "2222688",
       "title": "후천성면역결핍증 예방법 전부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "후천성면역결핍증 예방해요",
+      "category": "C",
+      "summary": "HIV 예방 및 관리해요",
       "date": "2026-11-11",
-      "committee": "",
+      "committee": "보건복지위원회",
       "proposer": "서미화의원 등 11인",
       "procResult": "",
       "sourceUrl": ""
@@ -26,10 +125,10 @@
     {
       "billNo": "2222687",
       "title": "의료법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "의료 서비스 향상해요",
+      "category": "C",
+      "summary": "의료 서비스 개선해요",
       "date": "2026-11-11",
-      "committee": "",
+      "committee": "보건복지위원회",
       "proposer": "서영석의원 등 10인",
       "procResult": "",
       "sourceUrl": ""
@@ -37,10 +136,10 @@
     {
       "billNo": "2222686",
       "title": "약사법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "약사 규제 강화해요",
+      "category": "C",
+      "summary": "약사법 강화로 소비 보호해요",
       "date": "2026-11-11",
-      "committee": "",
+      "committee": "보건복지위원회",
       "proposer": "서영석의원 등 11인",
       "procResult": "",
       "sourceUrl": ""
@@ -48,10 +147,10 @@
     {
       "billNo": "2222683",
       "title": "기초학력 보장법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
+      "category": "C",
       "summary": "기초학력 보장해요",
       "date": "2026-11-11",
-      "committee": "",
+      "committee": "교육위원회",
       "proposer": "이인선의원 등 12인",
       "procResult": "",
       "sourceUrl": ""
@@ -59,10 +158,10 @@
     {
       "billNo": "2222680",
       "title": "노인복지법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
+      "category": "C",
       "summary": "노인 복지 향상해요",
       "date": "2026-11-11",
-      "committee": "",
+      "committee": "보건복지위원회",
       "proposer": "남인순의원 등 11인",
       "procResult": "",
       "sourceUrl": ""
@@ -70,55 +169,22 @@
     {
       "billNo": "2222679",
       "title": "남녀고용평등과 일·가정 양립 지원에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
+      "category": "C",
       "summary": "일·가정 양립 지원해요",
       "date": "2026-11-11",
-      "committee": "",
+      "committee": "기후에너지환경노동위원회",
       "proposer": "박해철의원 등 11인",
       "procResult": "",
       "sourceUrl": ""
     },
     {
-      "billNo": "2222664",
-      "title": "학교안전사고 예방 및 보상에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "학교 안전사고 예방해요",
+      "billNo": "2222677",
+      "title": "지방교육재정교부금법 일부개정법률안",
+      "category": "C",
+      "summary": "교육재정 지원 확대해요",
       "date": "2026-11-11",
-      "committee": "",
-      "proposer": "정성국의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2222658",
-      "title": "공공보건의료에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "공공보건의료 지원해요",
-      "date": "2026-11-11",
-      "committee": "",
-      "proposer": "이달희의원 등 15인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2222650",
-      "title": "청년고용촉진 특별법 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "청년 고용 촉진해요",
-      "date": "2026-11-10",
-      "committee": "기후에너지환경노동위원회",
-      "proposer": "이용우의원 등 10인",
-      "procResult": "",
-      "sourceUrl": ""
-    },
-    {
-      "billNo": "2222649",
-      "title": "남녀고용평등과 일·가정 양립 지원에 관한 법률 일부개정법률안",
-      "category": "국민 생활 직결 분야",
-      "summary": "일·가정 양립 지원해요",
-      "date": "2026-11-10",
-      "committee": "기후에너지환경노동위원회",
-      "proposer": "이용우의원 등 11인",
+      "committee": "교육위원회",
+      "proposer": "이인선의원 등 12인",
       "procResult": "",
       "sourceUrl": ""
     }
